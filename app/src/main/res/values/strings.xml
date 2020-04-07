@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WeatherAppGeekBrains</string>
+    <string name="title_weather">Погода в Москве</string>
+    <string name="text_status_weather">Преимущ. солнечно</string>
+    <string name="text_temperature">3°C</string>
+    <string name="text_precipitation">Вероятность остадков: 0%</string>
+    <string name="humidity">Влажность: 40%</string>
+    <string name="text_wind">Ветер: 3 м/с</string>
+    <string name="text_day_time_now">Вторник 08:00</string>
 </resources>
