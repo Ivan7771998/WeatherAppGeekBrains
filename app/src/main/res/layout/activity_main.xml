@@ -1,103 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/titleWeather"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:text="@string/title_weather"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/size_title_weather"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageWeather"
-        android:layout_width="173dp"
-        android:layout_height="166dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="52dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleWeather"
-        app:srcCompat="@drawable/ic_image_weather" />
+        <TextView
+            android:id="@+id/titleWeather"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="@string/title_weather"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/size_title_weather"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textDayTimeNow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/text_day_time_now"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/textTemperature"
-        app:layout_constraintStart_toStartOf="@+id/textTemperature"
-        app:layout_constraintTop_toBottomOf="@+id/textTemperature" />
+        <ImageView
+            android:id="@+id/imageWeather"
+            android:layout_width="173dp"
+            android:layout_height="166dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/ic_image_weather"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleWeather" />
 
-    <TextView
-        android:id="@+id/textStatusWeather"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/text_status_weather"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/imageWeather"
-        app:layout_constraintEnd_toEndOf="@+id/textDayTimeNow"
-        app:layout_constraintStart_toStartOf="@+id/textDayTimeNow"
-        app:layout_constraintTop_toBottomOf="@+id/textDayTimeNow" />
+        <TextView
+            android:id="@+id/textDayTimeNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/text_day_time_now"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/textTemperature"
+            app:layout_constraintStart_toStartOf="@+id/textTemperature"
+            app:layout_constraintTop_toBottomOf="@+id/textTemperature" />
 
-    <TextView
-        android:id="@+id/textTemperature"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:text="@string/text_temperature"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageWeather"
-        app:layout_constraintTop_toTopOf="@+id/imageWeather" />
+        <TextView
+            android:id="@+id/textStatusWeather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/text_status_weather"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/imageWeather"
+            app:layout_constraintEnd_toEndOf="@+id/textDayTimeNow"
+            app:layout_constraintStart_toStartOf="@+id/textDayTimeNow"
+            app:layout_constraintTop_toBottomOf="@+id/textDayTimeNow" />
 
-    <TextView
-        android:id="@+id/textPrecipitation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
-        android:text="@string/text_precipitation"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageWeather"
-        app:layout_constraintTop_toBottomOf="@+id/imageWeather" />
+        <TextView
+            android:id="@+id/textTemperature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:text="@string/text_temperature"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="60sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageWeather"
+            app:layout_constraintTop_toTopOf="@+id/imageWeather" />
 
-    <TextView
-        android:id="@+id/textHumidity"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/humidity"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="@+id/textPrecipitation"
-        app:layout_constraintStart_toStartOf="@+id/textPrecipitation"
-        app:layout_constraintTop_toBottomOf="@+id/textPrecipitation" />
+        <TextView
+            android:id="@+id/textPrecipitation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="25dp"
+            android:text="@string/text_precipitation"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageWeather"
+            app:layout_constraintTop_toBottomOf="@+id/imageWeather" />
 
-    <TextView
-        android:id="@+id/textWind"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/text_wind"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="@+id/textHumidity"
-        app:layout_constraintStart_toStartOf="@+id/textHumidity"
-        app:layout_constraintTop_toBottomOf="@+id/textHumidity" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textHumidity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/humidity"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/textPrecipitation"
+            app:layout_constraintStart_toStartOf="@+id/textPrecipitation"
+            app:layout_constraintTop_toBottomOf="@+id/textPrecipitation" />
+
+        <TextView
+            android:id="@+id/textWind"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/text_wind"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textHumidity"
+            app:layout_constraintStart_toStartOf="@+id/textHumidity"
+            app:layout_constraintTop_toBottomOf="@+id/textHumidity" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
