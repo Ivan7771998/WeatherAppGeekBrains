@@ -8,4 +8,8 @@
     <string name="humidity">Влажность: 40%</string>
     <string name="text_wind">Ветер: 3 м/с</string>
     <string name="text_day_time_now">Вторник 08:00</string>
+    <string name="show_chance_of_precipitation">Показывать вероятность осадков</string>
+    <string name="show_humidity">Показывать влажность</string>
+    <string name="show_wind">Показывать скорость ветра</string>
+    <string name="shr_hint_password">Проверка сохранения</string>
 </resources>

@@ -73,10 +73,11 @@
 
         <TextView
             android:id="@+id/textPrecipitation"
+            android:visibility="visible"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/text_precipitation"
             android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -87,25 +88,84 @@
             android:id="@+id/textHumidity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/humidity"
             android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="@+id/textPrecipitation"
-            app:layout_constraintStart_toStartOf="@+id/textPrecipitation"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textPrecipitation" />
 
         <TextView
             android:id="@+id/textWind"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/text_wind"
             android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textHumidity"
-            app:layout_constraintStart_toStartOf="@+id/textHumidity"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textHumidity" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textWind"
+            app:layout_constraintVertical_bias="1.0">
+
+            <CheckBox
+                android:id="@+id/showPrecipitation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/show_chance_of_precipitation"
+                android:textColor="@android:color/black" />
+
+            <CheckBox
+                android:id="@+id/showHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/show_humidity"
+                android:textColor="@android:color/black" />
+
+            <CheckBox
+                android:id="@+id/showWind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/show_wind"
+                android:textColor="@android:color/black" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/severalTextInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/shr_hint_password">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/severalText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
