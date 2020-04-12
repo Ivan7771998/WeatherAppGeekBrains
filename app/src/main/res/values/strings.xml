@@ -11,4 +11,6 @@
     <string name="show_humidity">Show humidity</string>
     <string name="show_wind">Show wind</string>
     <string name="shr_hint_password">Enter text</string>
+    <string name="btn_search">Search</string>
+    <string name="inputCity">"Input city"</string>
 </resources>
