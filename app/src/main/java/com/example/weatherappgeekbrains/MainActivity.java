@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.button.MaterialButton;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -28,6 +32,14 @@ public class MainActivity extends AppCompatActivity {
     TextView textHumidity;
     @BindView(R.id.textWind)
     TextView textWind;
+    @BindView(R.id.severalText)
+    EditText severalText;
+    @BindView(R.id.textViewCheck)
+    TextView textViewCheck;
+    @BindView(R.id.setButtonText)
+    MaterialButton setButtonText;
+
+
     private MainPresenter presenter;
 
     @Override
@@ -36,54 +48,43 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        presenter= MainPresenter.getInstance();
+        presenter = MainPresenter.getInstance();
         initWorkViewCheckBox();
     }
 
     private void initWorkViewCheckBox() {
-        showPrecipitation.setVisibility(presenter.getShowPrecipitation());
-        showHumidity.setVisibility(presenter.getShowHumidity());
-        showWind.setVisibility(presenter.getShowWind());
-        checkShowPrecipitation(showPrecipitation.isChecked());
-        checkShowHumidity(showHumidity.isChecked());
-        checkShowWind(showWind.isChecked());
-
+        textViewCheck.setVisibility(presenter.getShowCheckView());
+        textViewCheck.setText(presenter.getTextCheckView());
         showPrecipitation.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            checkShowPrecipitation(isChecked);
+            checkVisibility(textPrecipitation, isChecked);
         });
 
         showHumidity.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            checkShowHumidity(isChecked);
+            checkVisibility(textHumidity, isChecked);
         });
 
         showWind.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            checkShowWind(isChecked);
+            checkVisibility(textWind, isChecked);
+        });
+
+        setButtonText.setOnClickListener(v -> {
+            if(!"".contentEquals(severalText.getText())){
+                presenter.setShowCheckView(View.VISIBLE);
+                presenter.setTextCheckView(severalText.getText().toString());
+                textViewCheck.setVisibility(presenter.getShowCheckView());
+                textViewCheck.setText(presenter.getTextCheckView());
+            }
         });
     }
 
-    private void checkShowPrecipitation(boolean isChecked){
+    private void checkVisibility(TextView text, boolean isChecked) {
         if (isChecked) {
-            textHumidity.setVisibility(View.VISIBLE);
+            text.setVisibility(View.VISIBLE);
         } else {
-            textHumidity.setVisibility(View.GONE);
+            text.setVisibility(View.GONE);
         }
     }
 
-    private void checkShowHumidity(boolean isChecked){
-        if (isChecked) {
-            textPrecipitation.setVisibility(View.VISIBLE);
-        } else {
-            textPrecipitation.setVisibility(View.GONE);
-        }
-    }
-
-    private void checkShowWind(boolean isChecked){
-        if (isChecked) {
-            textWind.setVisibility(View.VISIBLE);
-        } else {
-            textWind.setVisibility(View.GONE);
-        }
-    }
 
     @Override
     protected void onStart() {
