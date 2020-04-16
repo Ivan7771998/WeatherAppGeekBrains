@@ -7,4 +7,10 @@
     <string name="humidity">Humidity: 40%</string>
     <string name="text_wind">Wind: 3 м/с</string>
     <string name="text_day_time_now">Tuesday 08:00</string>
+    <string name="show_chance_of_precipitation">Show chance of precipitation</string>
+    <string name="show_humidity">Show humidity</string>
+    <string name="show_wind">Show wind</string>
+    <string name="shr_hint_password">Enter text</string>
+    <string name="btn_search">Search</string>
+    <string name="inputCity">"Input city"</string>
 </resources>
