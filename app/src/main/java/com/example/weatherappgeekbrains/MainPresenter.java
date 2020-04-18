@@ -7,41 +7,33 @@ public final class MainPresenter {
     private static MainPresenter instance = null;
     private static final Object syncObj = new Object();
 
-    private int showPrecipitation;
-    private int showHumidity;
-    private int showWind;
+
+    private int showCheckView;
+    private String textCheckView;
 
     private MainPresenter() {
-        showPrecipitation = View.VISIBLE;
-        showHumidity = View.VISIBLE;
-        showWind = View.VISIBLE;
+        showCheckView = View.GONE;
+        textCheckView = "";
     }
 
-    public int getShowPrecipitation() {
-        return showPrecipitation;
+    public int getShowCheckView() {
+        return showCheckView;
     }
 
-    public void setShowPrecipitation(int showPrecipitation) {
-        this.showPrecipitation = showPrecipitation;
+    public void setShowCheckView(int showCheckView) {
+        this.showCheckView = showCheckView;
     }
 
-    public int getShowHumidity() {
-        return showHumidity;
+    public String getTextCheckView() {
+        return textCheckView;
     }
 
-    public void setShowHumidity(int showHumidity) {
-        this.showHumidity = showHumidity;
+    public void setTextCheckView(String textCheckView) {
+        this.textCheckView = textCheckView;
     }
 
-    public int getShowWind() {
-        return showWind;
-    }
 
-    public void setShowWind(int showWind) {
-        this.showWind = showWind;
-    }
-
-    public static MainPresenter getInstance() {
+    static MainPresenter getInstance() {
         synchronized (syncObj) {
             if (instance == null) {
                 instance = new MainPresenter();
