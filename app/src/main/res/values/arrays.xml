@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="name_city">
+        <item>Москва</item>
+        <item>Таганрог</item>
+        <item>Ростов</item>
+        <item>Краснодар</item>
+        <item>Анапа</item>
+        <item>Сочи</item>
+    </array>
+
+    <string-array name="url_city_weather">
+        <item>https://www.gismeteo.ru/weather-moscow-4368/</item>
+        <item>https://www.gismeteo.ru/weather-taganrog-5106/</item>
+        <item>https://www.gismeteo.ru/weather-rostov-na-donu-5110/</item>
+        <item>https://www.gismeteo.ru/weather-krasnodar-5136/</item>
+        <item>https://www.gismeteo.ru/weather-anapa-5211/</item>
+        <item>https://www.gismeteo.ru/weather-sochi-5233/</item>
+    </string-array>
+
+    <array name="icons_city">
+        <item>@drawable/moscow</item>
+        <item>@drawable/taganrog</item>
+        <item>@drawable/rostov</item>
+        <item>@drawable/krasnodar</item>
+        <item>@drawable/anapa</item>
+        <item>@drawable/sochi</item>
+    </array>
+</resources>

@@ -13,5 +13,6 @@
     <string name="shr_hint_password">Enter text</string>
     <string name="btn_search">Search</string>
     <string name="inputCity">"Input city"</string>
-    <string name="title_btn_set_text">Set</string>
+    <string name="title_btn_open_in_internet">More information</string>
+
 </resources>
