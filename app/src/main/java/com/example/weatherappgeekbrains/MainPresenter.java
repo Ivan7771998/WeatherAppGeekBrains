@@ -7,7 +7,7 @@ public final class MainPresenter {
     private static MainPresenter instance = null;
     private static final Object syncObj = new Object();
 
-
+    private String titleWeather;
     private int showCheckView;
     private String textCheckView;
 
@@ -16,22 +16,29 @@ public final class MainPresenter {
         textCheckView = "";
     }
 
-    public int getShowCheckView() {
+    int getShowCheckView() {
         return showCheckView;
     }
 
-    public void setShowCheckView(int showCheckView) {
+    void setShowCheckView(int showCheckView) {
         this.showCheckView = showCheckView;
     }
 
-    public String getTextCheckView() {
+    String getTextCheckView() {
         return textCheckView;
     }
 
-    public void setTextCheckView(String textCheckView) {
+    void setTextCheckView(String textCheckView) {
         this.textCheckView = textCheckView;
     }
 
+    public String getTitleWeather() {
+        return titleWeather;
+    }
+
+    public void setTitleWeather(String titleWeather) {
+        this.titleWeather = titleWeather;
+    }
 
     static MainPresenter getInstance() {
         synchronized (syncObj) {

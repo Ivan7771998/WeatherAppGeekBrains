@@ -1,17 +1,19 @@
 package com.example.weatherappgeekbrains;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,6 +21,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = "MainActivity";
+    private final static String NAME_CITY = "name_city";
 
     @BindView(R.id.showPrecipitation)
     CheckBox showPrecipitation;
@@ -38,18 +41,42 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewCheck;
     @BindView(R.id.setButtonText)
     MaterialButton setButtonText;
-
+    @BindView(R.id.titleWeather)
+    TextView titleWeather;
+    @BindView(R.id.showInBrowserBtn)
+    MaterialButton showInBrowserBtn;
 
     private MainPresenter presenter;
 
+    public static Intent newInstance(Context context, String nameCity) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(NAME_CITY, nameCity);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        showState("onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         presenter = MainPresenter.getInstance();
+        setTitleWeather();
         initWorkViewCheckBox();
+        openWeatherInBrowser();
+    }
+
+    private void openWeatherInBrowser() {
+        showInBrowserBtn.setOnClickListener(v -> {
+            startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+                    Uri.parse("https://yandex.ru/pogoda/moscow")));
+        });
+    }
+
+    private void setTitleWeather() {
+        if (Objects.requireNonNull(getIntent().getExtras()).containsKey(NAME_CITY)) {
+            presenter.setTitleWeather(getIntent().getStringExtra(NAME_CITY));
+            titleWeather.setText(presenter.getTitleWeather());
+        }
     }
 
     private void initWorkViewCheckBox() {
@@ -68,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setButtonText.setOnClickListener(v -> {
-            if(!"".contentEquals(severalText.getText())){
+            if (!"".contentEquals(severalText.getText())) {
                 presenter.setShowCheckView(View.VISIBLE);
                 presenter.setTextCheckView(severalText.getText().toString());
                 textViewCheck.setVisibility(presenter.getShowCheckView());
@@ -83,54 +110,5 @@ public class MainActivity extends AppCompatActivity {
         } else {
             text.setVisibility(View.GONE);
         }
-    }
-
-
-    @Override
-    protected void onStart() {
-        showState("onStart()");
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        showState("onResume()");
-        super.onResume();
-    }
-
-    @Override
-    protected void onRestart() {
-        showState("onRestart()");
-        super.onRestart();
-    }
-
-    @Override
-    protected void onPause() {
-        showState("onPause()");
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        showState("onStop()");
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        showState("onDestroy()");
-        super.onDestroy();
-    }
-
-    private void showState(String nameState) {
-        Log.d(TAG, nameState);
-        Toast.makeText(getApplicationContext(), new StringBuilder()
-                .append(nameState).append(" method called!"), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        showState("onSaveInstanceState()");
     }
 }
