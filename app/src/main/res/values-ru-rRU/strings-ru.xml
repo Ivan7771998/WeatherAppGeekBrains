@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WeatherAppGeekBrains</string>
-    <string name="title_weather">Погода в Москве</string>
+    <string name="title_weather">Погода</string>
     <string name="text_status_weather">Преимущ. солнечно</string>
     <string name="text_temperature">3°C</string>
     <string name="text_precipitation">Вероятность остадков: 0%</string>
@@ -14,5 +14,11 @@
     <string name="shr_hint_password">Проверка сохранения</string>
     <string name="btn_search">Найти</string>
     <string name="inputCity">"Введите город"</string>
+<<<<<<< HEAD
     <string name="title_btn_open_in_internet">Дополнительная информация</string>
+=======
+    <string name="title_btn_set_text">Установить</string>
+    <string name="text_toast">Введите город для просмотра погоды!</string>
+    <string name="show_in_internet">Посмотреть в интернете</string>
+>>>>>>> b2870e266e6751b91aa3594a67453869a22bc4b9
 </resources>
