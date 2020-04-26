@@ -1,25 +1,30 @@
 package com.example.weatherappgeekbrains.ui.fragments;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.weatherappgeekbrains.R;
-import com.example.weatherappgeekbrains.models.CityData;
+import com.example.weatherappgeekbrains.adaters.AdapterListWeatherWeek;
+import com.example.weatherappgeekbrains.data.DataWeatherBuilder;
+import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
+import com.example.weatherappgeekbrains.models.CityModel;
 import com.google.android.material.button.MaterialButton;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,36 +34,26 @@ import butterknife.Unbinder;
 public class CoatOfArmsFragment extends Fragment {
 
     private static final String CITY_DATA = "city";
-    private CityData cityData;
-    private TypedArray imagesCity;
-    @BindView(R.id.showPrecipitation)
-    CheckBox showPrecipitation;
-    @BindView(R.id.showHumidity)
-    CheckBox showHumidity;
-    @BindView(R.id.showWind)
-    CheckBox showWind;
-    @BindView(R.id.textPrecipitation)
-    TextView textPrecipitation;
-    @BindView(R.id.textHumidity)
-    TextView textHumidity;
-    @BindView(R.id.textWind)
-    TextView textWind;
+    private CityModel cityModel;
+
     @BindView(R.id.btnMoreInfo)
     MaterialButton btnMoreInfo;
     @BindView(R.id.imageCity)
     ImageView imageCity;
     @BindView(R.id.titleWeather)
     TextView titleWeather;
+    @BindView(R.id.list_week)
+    RecyclerView recyclerView;
 
     private Unbinder unbinder;
 
     public CoatOfArmsFragment() {
     }
 
-    static CoatOfArmsFragment newInstance(CityData cityData) {
+    static CoatOfArmsFragment newInstance(CityModel cityModel) {
         CoatOfArmsFragment fragment = new CoatOfArmsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(CITY_DATA, cityData);
+        args.putParcelable(CITY_DATA, cityModel);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,7 +62,7 @@ public class CoatOfArmsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            cityData = getArguments().getParcelable(CITY_DATA);
+            cityModel = getArguments().getParcelable(CITY_DATA);
         }
     }
 
@@ -81,45 +76,49 @@ public class CoatOfArmsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-        imagesCity = getResources().obtainTypedArray(R.array.icons_city);
-        initWorkViewCheckBox();
+        initView();
+        IDataRecycler iDataRecycler = initDataWeather();
+        initListWeather(iDataRecycler);
     }
 
-    private void initWorkViewCheckBox() {
-        showPrecipitation.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            checkVisibility(textPrecipitation, isChecked);
-        });
-
-        showHumidity.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            checkVisibility(textHumidity, isChecked);
-        });
-
-        showWind.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            checkVisibility(textWind, isChecked);
-        });
-        titleWeather.setText(cityData.getNameCity());
-        imageCity.setImageDrawable(imagesCity.getDrawable(cityData.getImageId()));
+    private void initView() {
+        titleWeather.setText(cityModel.getNameCity());
+        imageCity.setImageDrawable(Objects.requireNonNull(getActivity()).getResources()
+                .getDrawable(cityModel.getImageId()));
         btnMoreInfo.setOnClickListener(v -> {
             startActivity(new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse(cityData.getUrlCity())));
+                    Uri.parse(cityModel.getUrlCity())));
         });
+    }
+
+    private IDataRecycler initDataWeather() {
+        return new DataWeatherBuilder()
+                .setResources(getResources())
+                .build();
+    }
+
+    private void initListWeather(IDataRecycler iDataRecycler) {
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
+                RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        AdapterListWeatherWeek adapterListWeatherWeek = new AdapterListWeatherWeek(iDataRecycler);
+        DividerItemDecoration itemDecoration =
+                new DividerItemDecoration(Objects.requireNonNull(getContext()),
+                        LinearLayoutManager.VERTICAL);
+        itemDecoration.setDrawable(Objects.requireNonNull(getActivity()).getResources()
+                .getDrawable(R.drawable.separator));
+        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.setAdapter(adapterListWeatherWeek);
     }
 
     int getImage() {
-        return getCityData().getImageId();
+        return getCityModel().getImageId();
     }
 
-    private CityData getCityData(){
+    private CityModel getCityModel() {
         assert getArguments() != null;
         return getArguments().getParcelable(CITY_DATA);
-    }
-
-    private void checkVisibility(TextView text, boolean isChecked) {
-        if (isChecked) {
-            text.setVisibility(View.VISIBLE);
-        } else {
-            text.setVisibility(View.GONE);
-        }
     }
 
     @Override

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WeatherAppGeekBrains</string>
-    <string name="title_weather">Погода</string>
+    <string name="title_weather">Москва</string>
     <string name="text_status_weather">Преимущ. солнечно</string>
-    <string name="text_temperature">3°C</string>
+    <string name="text_temperature">15 °C</string>
     <string name="text_precipitation">Вероятность остадков: 0%</string>
     <string name="humidity">Влажность: 40%</string>
     <string name="text_wind">Ветер: 3 м/с</string>

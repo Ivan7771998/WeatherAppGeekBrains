@@ -2,37 +2,41 @@ package com.example.weatherappgeekbrains.ui.fragments;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.weatherappgeekbrains.R;
-import com.example.weatherappgeekbrains.models.CityData;
+import com.example.weatherappgeekbrains.adaters.AdapterListNameCity;
+import com.example.weatherappgeekbrains.data.DataCitiesBuilder;
+import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
+import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.ui.activities.SelectCityActivity;
 
 import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 public class CitiesFragment extends Fragment {
 
     private boolean isLandscapeOrientation;
-    private CityData currentCityData;
-    private String[] nameCity;
-    private String[] urlCity;
-
-    public CitiesFragment() {
-
-    }
+    private CityModel currentCityModel;
+    private IDataRecycler iDataRecycler;
+    @BindView(R.id.list_cities)
+    RecyclerView recyclerView;
+    private Unbinder unbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,13 +47,9 @@ public class CitiesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initArrays();
-        initList((LinearLayout) view);
-    }
-
-    private void initArrays() {
-        nameCity = getResources().getStringArray(R.array.name_city);
-        urlCity = getResources().getStringArray(R.array.url_city_weather);
+        unbinder = ButterKnife.bind(this, view);
+        iDataRecycler = initDataCities();
+        initListCities(iDataRecycler);
     }
 
 
@@ -60,45 +60,53 @@ public class CitiesFragment extends Fragment {
         isLandscapeOrientation = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
         if (savedInstanceState != null) {
-            currentCityData = savedInstanceState.getParcelable("city");
+            currentCityModel = savedInstanceState.getParcelable("city");
         } else {
-            currentCityData = new CityData(nameCity[0], 0, urlCity[0]);
+            CityModel cityModel = iDataRecycler.getData(0);
+            currentCityModel = new CityModel(cityModel.getNameCity(), cityModel.getImageId(),
+                    cityModel.getUrlCity());
         }
 
         if (isLandscapeOrientation) {
-            showCoatOfArms(currentCityData);
+            showCoatOfArms(currentCityModel);
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable("city", currentCityData);
+        outState.putParcelable("city", currentCityModel);
         super.onSaveInstanceState(outState);
     }
 
-    private void initList(@NonNull LinearLayout view) {
-        String[] cities = getResources().getStringArray(R.array.name_city);
-        for (int i = 0; i < cities.length; i++) {
-            String city = cities[i];
-            TextView tv = new TextView(getContext());
-            tv.setText(city);
-            tv.setTextSize(30);
-            view.addView(tv);
-            final int indexCity = i;
-            tv.setOnClickListener(v -> {
-                currentCityData = new CityData(nameCity[indexCity], indexCity, urlCity[indexCity]);
-                showCoatOfArms(currentCityData);
-            });
-        }
+
+    private IDataRecycler initDataCities() {
+        return new DataCitiesBuilder()
+                .setResources(getResources())
+                .build();
     }
 
-    private void showCoatOfArms(CityData cityData) {
+    private void initListCities(IDataRecycler iDataRecycler) {
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
+                RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        AdapterListNameCity adapterListNameCity = new AdapterListNameCity(iDataRecycler);
+        recyclerView.setAdapter(adapterListNameCity);
+
+        adapterListNameCity.setOnItemClickListener((view, position) -> {
+            currentCityModel = iDataRecycler.getData(position);
+            showCoatOfArms(currentCityModel);
+        });
+    }
+
+    private void showCoatOfArms(CityModel cityModel) {
         if (isLandscapeOrientation) {
             assert getFragmentManager() != null;
             CoatOfArmsFragment detail = (CoatOfArmsFragment)
                     getFragmentManager().findFragmentById(R.id.coat_of_arms);
-            if (detail == null || detail.getImage() != cityData.getImageId()) {
-                detail = CoatOfArmsFragment.newInstance(cityData);
+            if (detail == null || detail.getImage() != cityModel.getImageId()) {
+                detail = CoatOfArmsFragment.newInstance(cityModel);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.coat_of_arms, detail);  // замена фрагмента
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -106,9 +114,14 @@ public class CitiesFragment extends Fragment {
             }
         } else {
             Intent intent = new Intent(Objects.requireNonNull(getActivity()), SelectCityActivity.class);
-            intent.putExtra("city", cityData);
+            intent.putExtra("city", cityModel);
             startActivity(intent);
         }
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

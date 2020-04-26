@@ -11,6 +11,15 @@ public final class MainPresenter {
     private int showCheckView;
     private String textCheckView;
 
+    public static MainPresenter getInstance() {
+        synchronized (syncObj) {
+            if (instance == null) {
+                instance = new MainPresenter();
+            }
+            return instance;
+        }
+    }
+
     private MainPresenter() {
         showCheckView = View.GONE;
         textCheckView = "";
@@ -40,12 +49,5 @@ public final class MainPresenter {
         this.titleWeather = titleWeather;
     }
 
-    public static MainPresenter getInstance() {
-        synchronized (syncObj) {
-            if (instance == null) {
-                instance = new MainPresenter();
-            }
-            return instance;
-        }
-    }
+
 }
