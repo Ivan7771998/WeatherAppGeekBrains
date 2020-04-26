@@ -33,7 +33,7 @@ public final class MainPresenter {
     }
 
 
-    static MainPresenter getInstance() {
+    public static MainPresenter getInstance() {
         synchronized (syncObj) {
             if (instance == null) {
                 instance = new MainPresenter();

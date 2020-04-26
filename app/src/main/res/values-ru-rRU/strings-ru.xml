@@ -14,5 +14,5 @@
     <string name="shr_hint_password">Проверка сохранения</string>
     <string name="btn_search">Найти</string>
     <string name="inputCity">"Введите город"</string>
-    <string name="title_btn_set_text">Установить</string>
+    <string name="title_btn_open_in_internet">Дополнительная информация</string>
 </resources>
