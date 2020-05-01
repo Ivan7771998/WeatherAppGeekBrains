@@ -26,4 +26,44 @@
         <item>@drawable/anapa</item>
         <item>@drawable/sochi</item>
     </array>
+
+    <array name="icons_weather_week">
+        <item>@drawable/ic_sun</item>
+        <item>@drawable/ic_cloud</item>
+        <item>@drawable/ic_cloud_sun</item>
+        <item>@drawable/ic_storm</item>
+        <item>@drawable/ic_cloudy</item>
+        <item>@drawable/ic_sun</item>
+        <item>@drawable/ic_sun</item>
+    </array>
+
+    <array name="status_day">
+        <item>Ясно</item>
+        <item>Облачно</item>
+        <item>Облачно</item>
+        <item>Шторм</item>
+        <item>Облачно</item>
+        <item>Ясно</item>
+        <item>Ясно</item>
+    </array>
+
+    <array name="temperature_day">
+        <item>16 °C</item>
+        <item>15 °C</item>
+        <item>13 °C</item>
+        <item>8 °C</item>
+        <item>12 °C</item>
+        <item>14 °C</item>
+        <item>16 °C</item>
+    </array>
+
+    <array name="name_day_week">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>Воскресенье</item>
+    </array>
 </resources>

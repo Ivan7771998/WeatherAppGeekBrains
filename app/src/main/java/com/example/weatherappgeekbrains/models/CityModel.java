@@ -3,32 +3,32 @@ package com.example.weatherappgeekbrains.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class CityData implements Parcelable {
+public class CityModel implements Parcelable {
     private String nameCity;
     private int imageCityId;
     private String urlCity;
 
-    public CityData(String nameCity, int imageCityId, String urlCity) {
+    public CityModel(String nameCity, int imageCityId, String urlCity) {
         this.nameCity = nameCity;
         this.imageCityId = imageCityId;
         this.urlCity = urlCity;
     }
 
-    private CityData(Parcel in) {
+    private CityModel(Parcel in) {
         nameCity = in.readString();
         urlCity = in.readString();
         imageCityId = in.readInt();
     }
 
-    public static final Creator<CityData> CREATOR = new Creator<CityData>() {
+    public static final Creator<CityModel> CREATOR = new Creator<CityModel>() {
         @Override
-        public CityData createFromParcel(Parcel in) {
-            return new CityData(in);
+        public CityModel createFromParcel(Parcel in) {
+            return new CityModel(in);
         }
 
         @Override
-        public CityData[] newArray(int size) {
-            return new CityData[size];
+        public CityModel[] newArray(int size) {
+            return new CityModel[size];
         }
     };
 
