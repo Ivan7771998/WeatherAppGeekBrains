@@ -52,10 +52,13 @@ public class AdapterListWeatherWeek extends RecyclerView.Adapter<AdapterListWeat
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.imageWeather)
         ImageView imageWeather;
+
         @BindView(R.id.dayWeek)
         TextView dayWeek;
+
         @BindView(R.id.statusWeather)
         TextView statusWeather;
+
         @BindView(R.id.itemWeekTemperature)
         TextView itemWeekTemperature;
 

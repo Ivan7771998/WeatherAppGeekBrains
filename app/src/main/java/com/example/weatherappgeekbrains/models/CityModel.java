@@ -39,7 +39,6 @@ public class CityModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeString(nameCity);
         dest.writeString(urlCity);
         dest.writeInt(imageCityId);

@@ -20,7 +20,6 @@ public class DataCities implements IDataRecycler {
         this.resources = resources;
     }
 
-
     @Override
     public <T> T getData(int position) {
         return (T) cityModelList.get(position);
@@ -36,7 +35,6 @@ public class DataCities implements IDataRecycler {
         return resources;
     }
 
-
     DataCities init() {
         String[] nameCities = resources.getStringArray(R.array.name_city);
         int[] images = Tools.getImageArray(resources, R.array.icons_city);
@@ -46,5 +44,4 @@ public class DataCities implements IDataRecycler {
         }
         return this;
     }
-
 }
