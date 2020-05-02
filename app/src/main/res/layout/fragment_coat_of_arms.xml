@@ -122,7 +122,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:gravity="center"QQ
+            android:gravity="center"
             android:text="@string/title_btn_open_in_internet"
             android:background="?attr/buttoncolor"
             app:layout_constraintBottom_toBottomOf="parent"
