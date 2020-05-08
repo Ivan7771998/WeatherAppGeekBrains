@@ -19,7 +19,7 @@ public class DataWeather implements IDataRecycler {
         this.resources = resources;
     }
 
-    DataWeather init() {
+    void init() {
         String[] weatherDay = resources.getStringArray(R.array.name_day_week);
         int[] images = Tools.getImageArray(resources, R.array.icons_weather_week);
         String[] temperature = resources.getStringArray(R.array.temperature_day);
@@ -27,7 +27,6 @@ public class DataWeather implements IDataRecycler {
         for (int i = 0; i < weatherDay.length; i++) {
             weatherModelList.add(new WeatherModel(weatherDay[i], statusWeather[i], temperature[i], images[i]));
         }
-        return this;
     }
 
     @Override
