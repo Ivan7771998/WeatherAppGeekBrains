@@ -38,10 +38,13 @@ public class CoatOfArmsFragment extends Fragment {
 
     @BindView(R.id.btnMoreInfo)
     MaterialButton btnMoreInfo;
+
     @BindView(R.id.imageCity)
     ImageView imageCity;
+
     @BindView(R.id.titleWeather)
     TextView titleWeather;
+
     @BindView(R.id.list_week)
     RecyclerView recyclerView;
 
@@ -83,7 +86,7 @@ public class CoatOfArmsFragment extends Fragment {
 
     private void initView() {
         titleWeather.setText(cityModel.getNameCity());
-        imageCity.setImageDrawable(Objects.requireNonNull(getActivity()).getResources()
+        imageCity.setImageDrawable(requireActivity().getResources()
                 .getDrawable(cityModel.getImageId()));
         btnMoreInfo.setOnClickListener(v -> {
             startActivity(new Intent(android.content.Intent.ACTION_VIEW,
@@ -106,8 +109,6 @@ public class CoatOfArmsFragment extends Fragment {
         DividerItemDecoration itemDecoration =
                 new DividerItemDecoration(Objects.requireNonNull(getContext()),
                         LinearLayoutManager.VERTICAL);
-        itemDecoration.setDrawable(Objects.requireNonNull(getActivity()).getResources()
-                .getDrawable(R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setAdapter(adapterListWeatherWeek);
     }

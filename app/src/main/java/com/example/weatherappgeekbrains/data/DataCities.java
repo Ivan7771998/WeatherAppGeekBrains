@@ -20,7 +20,6 @@ public class DataCities implements IDataRecycler {
         this.resources = resources;
     }
 
-
     @Override
     public <T> T getData(int position) {
         return (T) cityModelList.get(position);
@@ -36,15 +35,12 @@ public class DataCities implements IDataRecycler {
         return resources;
     }
 
-
-    DataCities init() {
+    void init() {
         String[] nameCities = resources.getStringArray(R.array.name_city);
         int[] images = Tools.getImageArray(resources, R.array.icons_city);
         String[] urlCities = resources.getStringArray(R.array.url_city_weather);
         for (int i = 0; i < nameCities.length; i++) {
             cityModelList.add(new CityModel(nameCities[i], images[i], urlCities[i]));
         }
-        return this;
     }
-
 }

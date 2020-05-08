@@ -3,7 +3,6 @@ package com.example.weatherappgeekbrains.adaters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CityModel;
+import com.google.android.material.textview.MaterialTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +57,7 @@ public class AdapterListNameCity extends RecyclerView.Adapter<AdapterListNameCit
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_name_city)
-        TextView nameCity;
+        MaterialTextView nameCity;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);

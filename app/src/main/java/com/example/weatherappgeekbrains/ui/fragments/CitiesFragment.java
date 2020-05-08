@@ -20,6 +20,7 @@ import com.example.weatherappgeekbrains.adaters.AdapterListNameCity;
 import com.example.weatherappgeekbrains.data.DataCitiesBuilder;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CityModel;
+import com.example.weatherappgeekbrains.ui.activities.MainActivity;
 import com.example.weatherappgeekbrains.ui.activities.SelectCityActivity;
 
 import java.util.Objects;
@@ -34,8 +35,10 @@ public class CitiesFragment extends Fragment {
     private boolean isLandscapeOrientation;
     private CityModel currentCityModel;
     private IDataRecycler iDataRecycler;
+
     @BindView(R.id.list_cities)
     RecyclerView recyclerView;
+
     private Unbinder unbinder;
 
     @Override
@@ -78,7 +81,6 @@ public class CitiesFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-
     private IDataRecycler initDataCities() {
         return new DataCitiesBuilder()
                 .setResources(getResources())
@@ -101,19 +103,20 @@ public class CitiesFragment extends Fragment {
     }
 
     private void showCoatOfArms(CityModel cityModel) {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        assert mainActivity != null;
         if (isLandscapeOrientation) {
-            assert getFragmentManager() != null;
             CoatOfArmsFragment detail = (CoatOfArmsFragment)
-                    getFragmentManager().findFragmentById(R.id.coat_of_arms);
+                    mainActivity.getSupportFragmentManager().findFragmentById(R.id.coat_of_arms);
             if (detail == null || detail.getImage() != cityModel.getImageId()) {
                 detail = CoatOfArmsFragment.newInstance(cityModel);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = mainActivity.getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.coat_of_arms, detail);  // замена фрагмента
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
             }
         } else {
-            Intent intent = new Intent(Objects.requireNonNull(getActivity()), SelectCityActivity.class);
+            Intent intent = new Intent(requireActivity(), SelectCityActivity.class);
             intent.putExtra("city", cityModel);
             startActivity(intent);
         }

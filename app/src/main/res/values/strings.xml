@@ -17,5 +17,11 @@
     <string name="title_btn_set_text">Set</string>
     <string name="text_toast">Enter a city to view the weather!</string>
     <string name="show_in_internet">show in internet</string>
-    <string name="title_select_city">Выбранный город</string>
+    <string name="title_select_city">Selected city</string>
+    <string name="title_ic_weather">Weather</string>
+    <string name="title_about_me">About Dev</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_text_setTheme">Set night theme</string>
+    <string name="name_profession">Android developer</string>
+    <string name="developer_full_name">Popov Ivan</string>
 </resources>
