@@ -24,4 +24,25 @@
     <string name="title_text_setTheme">Set night theme</string>
     <string name="name_profession">Android developer</string>
     <string name="developer_full_name">Popov Ivan</string>
+    <string name="title_feel_like">Feels like</string>
+    <string name="title_min_temp">Min temp</string>
+    <string name="title_max_temp">Max temp</string>
+    <string name="title_pressure">Pressure</string>
+    <string name="title_humidity">Humidity</string>
+    <string name="title_speed_wind">Wind speed</string>
+    <string name="title_sunrise">Sunrise</string>
+    <string name="title_sunset">Sunset</string>
+    <string name="title_visibility">Visibility</string>
+    <string name="wind_values">м/с</string>
+    <string name="humidity_values">%</string>
+    <string name="temperature_values">°C</string>
+    <string name="visible_values">км</string>
+    <string name="pressure_values">мм.рт.ст.</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
 </resources>
