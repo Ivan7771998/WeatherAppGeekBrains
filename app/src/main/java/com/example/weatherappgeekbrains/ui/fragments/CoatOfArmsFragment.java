@@ -27,13 +27,13 @@ import com.example.weatherappgeekbrains.adaters.AdapterListWeatherWeek;
 import com.example.weatherappgeekbrains.data.DataWeatherBuilder;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CityModel;
-import com.example.weatherappgeekbrains.models.CurrentWeatherPojo;
+import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
 import com.example.weatherappgeekbrains.network.IRetrofitRequests;
 import com.example.weatherappgeekbrains.network.RetrofitClientInstance;
+import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.tools.Tools;
+import com.example.weatherappgeekbrains.tools.UntilTimes;
 import com.google.android.material.button.MaterialButton;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +48,7 @@ public class CoatOfArmsFragment extends Fragment {
 
     private static final String CITY_DATA = "city";
     private CityModel cityModel;
-    private CurrentWeatherPojo currentWeather;
+    private CurrentWeatherModel currentWeather;
 
     @BindView(R.id.btnMoreInfo)
     MaterialButton btnMoreInfo;
@@ -146,17 +146,18 @@ public class CoatOfArmsFragment extends Fragment {
         mainContainer.setVisibility(View.GONE);
         IRetrofitRequests retrofitRequests = RetrofitClientInstance.getRetrofitInstance()
                 .create(IRetrofitRequests.class);
-        retrofitRequests.getCurrentWeather(cityModel.getNameCity(), "metric", "ru", Tools.API_KEY)
+        retrofitRequests.getCurrentWeather(cityModel.getNameCity(), "metric", "ru",
+                Constants.API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<CurrentWeatherPojo>() {
+                .subscribe(new SingleObserver<CurrentWeatherModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                     }
 
                     @Override
-                    public void onSuccess(CurrentWeatherPojo currentWeatherPojo) {
-                        currentWeather = currentWeatherPojo;
+                    public void onSuccess(CurrentWeatherModel currentWeatherModel) {
+                        currentWeather = currentWeatherModel;
                         progressBar.setVisibility(View.GONE);
                         mainContainer.setVisibility(View.VISIBLE);
                         initView();
@@ -178,7 +179,7 @@ public class CoatOfArmsFragment extends Fragment {
         textStatusWeather.setText(new StringBuilder(descriptionWeather.substring(0, 1).toUpperCase() +
                 descriptionWeather.substring(1).toLowerCase()));
         textDayTimeNow.setText(new StringBuilder(Tools.getDayWeek(getResources()) +
-                " " + Tools.getCurrentTime()));
+                " " + UntilTimes.getCurrentTime()));
         textFeelLike.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
                 .getFeelsLike().toString()).intValue()
                 + " " +
@@ -203,12 +204,12 @@ public class CoatOfArmsFragment extends Fragment {
                 .getSpeed().toString()).longValue()
                 + " " +
                 requireActivity().getResources().getString(R.string.wind_values)));
-        textSunRise.setText(Tools.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunrise())));
-        textSunSet.setText(Tools.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunset())));
+        textSunRise.setText(UntilTimes.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunrise())));
+        textSunSet.setText(UntilTimes.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunset())));
         textVisibility.setText(new StringBuilder(currentWeather.getVisibility() / 1000 + " "
                 + requireActivity().getResources().getString(R.string.visible_values)));
         titleWeather.setText(cityModel.getNameCity());
-        imageCity.setImageDrawable(requireActivity().getResources()
+        imageCity.setImageDrawable(requireActivity()
                 .getDrawable(cityModel.getImageId()));
         btnMoreInfo.setOnClickListener(v -> {
             startActivity(new Intent(android.content.Intent.ACTION_VIEW,

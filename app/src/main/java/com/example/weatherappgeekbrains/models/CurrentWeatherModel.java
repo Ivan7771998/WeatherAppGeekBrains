@@ -5,15 +5,15 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class CurrentWeatherPojo {
+public class CurrentWeatherModel {
 
     @SerializedName("coord")
     @Expose
-    private CoordPojo coord;
+    private CoordModel coord;
 
     @SerializedName("weather")
     @Expose
-    private List<WeatherPojo> weather = null;
+    private List<WeatherModel> weather = null;
 
     @SerializedName("base")
     @Expose
@@ -21,7 +21,7 @@ public class CurrentWeatherPojo {
 
     @SerializedName("main")
     @Expose
-    private MainPojo main;
+    private MainModel main;
 
     @SerializedName("visibility")
     @Expose
@@ -29,11 +29,11 @@ public class CurrentWeatherPojo {
 
     @SerializedName("wind")
     @Expose
-    private WindPojo wind;
+    private WindModel wind;
 
     @SerializedName("clouds")
     @Expose
-    private CloudsPojo clouds;
+    private CloudsModel clouds;
 
     @SerializedName("dt")
     @Expose
@@ -41,7 +41,7 @@ public class CurrentWeatherPojo {
 
     @SerializedName("sys")
     @Expose
-    private SysPojo sys;
+    private SysModel sys;
 
     @SerializedName("timezone")
     @Expose
@@ -59,11 +59,11 @@ public class CurrentWeatherPojo {
     @Expose
     private Integer cod;
 
-    public CoordPojo getCoord() {
+    public CoordModel getCoord() {
         return coord;
     }
 
-    public List<WeatherPojo> getWeather() {
+    public List<WeatherModel> getWeather() {
         return weather;
     }
 
@@ -71,7 +71,7 @@ public class CurrentWeatherPojo {
         return base;
     }
 
-    public MainPojo getMain() {
+    public MainModel getMain() {
         return main;
     }
 
@@ -79,11 +79,11 @@ public class CurrentWeatherPojo {
         return visibility;
     }
 
-    public WindPojo getWind() {
+    public WindModel getWind() {
         return wind;
     }
 
-    public CloudsPojo getClouds() {
+    public CloudsModel getClouds() {
         return clouds;
     }
 
@@ -91,7 +91,7 @@ public class CurrentWeatherPojo {
         return dt;
     }
 
-    public SysPojo getSys() {
+    public SysModel getSys() {
         return sys;
     }
 

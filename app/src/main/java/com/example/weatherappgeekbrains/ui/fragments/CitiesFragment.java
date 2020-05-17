@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,23 +20,12 @@ import com.example.weatherappgeekbrains.adaters.AdapterListNameCity;
 import com.example.weatherappgeekbrains.data.DataCitiesBuilder;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CityModel;
-import com.example.weatherappgeekbrains.models.CurrentWeatherPojo;
-import com.example.weatherappgeekbrains.network.IRetrofitRequests;
-import com.example.weatherappgeekbrains.network.RetrofitClientInstance;
-import com.example.weatherappgeekbrains.tools.Tools;
 import com.example.weatherappgeekbrains.ui.activities.MainActivity;
 import com.example.weatherappgeekbrains.ui.activities.SelectCityActivity;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Scheduler;
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 
 public class CitiesFragment extends Fragment {

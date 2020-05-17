@@ -1,5 +1,6 @@
 package com.example.weatherappgeekbrains.network;
 
+import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.tools.Tools;
 
 import retrofit2.Retrofit;
@@ -13,7 +14,7 @@ public class RetrofitClientInstance {
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()
-                    .baseUrl(Tools.BASE_URL)
+                    .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();

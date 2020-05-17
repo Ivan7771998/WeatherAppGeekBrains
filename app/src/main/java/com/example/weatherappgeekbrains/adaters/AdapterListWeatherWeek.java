@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
-import com.example.weatherappgeekbrains.models.WeatherModel;
+import com.example.weatherappgeekbrains.models.WeatherDayWeekModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,11 +37,11 @@ public class AdapterListWeatherWeek extends RecyclerView.Adapter<AdapterListWeat
 
     @Override
     public void onBindViewHolder(@NonNull AdapterListWeatherWeek.ViewHolder holder, int position) {
-        WeatherModel weatherModel = dataWeather.getData(position);
-        holder.dayWeek.setText(weatherModel.getDayWeek());
-        holder.imageWeather.setImageDrawable(resources.getDrawable(weatherModel.getIdImage()));
-        holder.statusWeather.setText(weatherModel.getStatusWeather());
-        holder.itemWeekTemperature.setText(weatherModel.getTemperature());
+        WeatherDayWeekModel weatherDayWeekModel = dataWeather.getData(position);
+        holder.dayWeek.setText(weatherDayWeekModel.getDayWeek());
+        holder.imageWeather.setImageDrawable(resources.getDrawable(weatherDayWeekModel.getIdImage()));
+        holder.statusWeather.setText(weatherDayWeekModel.getStatusWeather());
+        holder.itemWeekTemperature.setText(weatherDayWeekModel.getTemperature());
     }
 
     @Override

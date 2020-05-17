@@ -3,7 +3,7 @@ package com.example.weatherappgeekbrains.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MainPojo {
+public class MainModel {
 
     @SerializedName("temp")
     @Expose

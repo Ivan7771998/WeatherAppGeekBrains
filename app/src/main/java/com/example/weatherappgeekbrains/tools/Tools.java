@@ -20,11 +20,6 @@ import java.util.TimeZone;
 
 public class Tools {
 
-    public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
-    public static final String API_KEY = "ac9fc5305ccc8ea811fdedeaf0bd7157";
-    public static final String IS_DARK_THEME = "is_dark_theme";
-    private static final String NAME_PREFERENCE = "my_shared_preference";
-
     public static int[] getImageArray(Resources resources, int idArray) {
         @SuppressLint("Recycle")
         TypedArray pictures = resources.obtainTypedArray(idArray);
@@ -37,7 +32,7 @@ public class Tools {
     }
 
     public static SharedPreferences newInstance(Context context) {
-        return context.getSharedPreferences(NAME_PREFERENCE, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(Constants.NAME_PREFERENCE, Context.MODE_PRIVATE);
     }
 
     public static String getDayWeek(Resources resources) {
@@ -60,20 +55,5 @@ public class Tools {
                 return resources.getString(R.string.sunday);
         }
         return null;
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    public static String getCurrentTime() {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-        Date date = new Date(System.currentTimeMillis());
-        return formatter.format(date);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @SuppressLint("SimpleDateFormat")
-    public static String getTimeFromMil(Long longDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-        Date date = Date.from(Instant.ofEpochSecond(longDate));
-        return formatter.format(date);
     }
 }
