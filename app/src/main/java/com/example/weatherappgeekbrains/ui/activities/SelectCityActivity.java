@@ -23,6 +23,5 @@ public class SelectCityActivity extends BaseActivity {
                     .beginTransaction()
                     .replace(R.id.fragment_container, details).commit();
         }
-
     }
 }

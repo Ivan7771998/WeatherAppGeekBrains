@@ -23,8 +23,6 @@ import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.ui.activities.MainActivity;
 import com.example.weatherappgeekbrains.ui.activities.SelectCityActivity;
 
-import java.util.Objects;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

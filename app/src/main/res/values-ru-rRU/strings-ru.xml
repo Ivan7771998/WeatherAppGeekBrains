@@ -25,4 +25,25 @@
     <string name="title_text_setTheme">Установить черную тему</string>
     <string name="name_profession">Андроид разработчик</string>
     <string name="developer_full_name">Попов Иван</string>
+    <string name="title_feel_like">Ощущается как</string>
+    <string name="title_min_temp">Мин темп</string>
+    <string name="title_max_temp">Макс темп</string>
+    <string name="title_pressure">Давление</string>
+    <string name="title_humidity">Влажность</string>
+    <string name="title_speed_wind">Скорость ветра</string>
+    <string name="title_sunrise">Восход</string>
+    <string name="title_sunset">Закат</string>
+    <string name="title_visibility">Видимость</string>
+    <string name="wind_values">м/с</string>
+    <string name="humidity_values">%</string>
+    <string name="temperature_values">°C</string>
+    <string name="visible_values">км</string>
+    <string name="pressure_values">мм.рт.ст.</string>
+    <string name="monday">Понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">Среда</string>
+    <string name="thursday">Четверг</string>
+    <string name="friday">Пятница</string>
+    <string name="saturday">Суббота</string>
+    <string name="sunday">Воскресенье</string>
 </resources>

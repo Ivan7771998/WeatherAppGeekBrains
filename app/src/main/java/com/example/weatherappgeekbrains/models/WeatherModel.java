@@ -1,32 +1,39 @@
 package com.example.weatherappgeekbrains.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class WeatherModel {
 
-    private String dayWeek;
-    private String statusWeather;
-    private String temperature;
-    private int idImage;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
 
-    public WeatherModel(String dayWeek, String statusWeather, String temperature, int idImage) {
-        this.dayWeek = dayWeek;
-        this.statusWeather = statusWeather;
-        this.temperature = temperature;
-        this.idImage = idImage;
+    @SerializedName("main")
+    @Expose
+    private String main;
+
+    @SerializedName("description")
+    @Expose
+    private String description;
+
+    @SerializedName("icon")
+    @Expose
+    private String icon;
+
+    public Integer getId() {
+        return id;
     }
 
-    public String getDayWeek() {
-        return dayWeek;
+    public String getMain() {
+        return main;
     }
 
-    public String getStatusWeather() {
-        return statusWeather;
+    public String getDescription() {
+        return description;
     }
 
-    public String getTemperature() {
-        return temperature;
-    }
-
-    public int getIdImage() {
-        return idImage;
+    public String getIcon() {
+        return icon;
     }
 }
