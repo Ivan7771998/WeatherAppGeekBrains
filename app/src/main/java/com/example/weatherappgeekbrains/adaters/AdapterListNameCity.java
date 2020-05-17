@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CityModel;
+import com.example.weatherappgeekbrains.ui.fragments.CitiesFragment;
 import com.google.android.material.textview.MaterialTextView;
 
 import butterknife.BindView;
@@ -19,9 +20,12 @@ public class AdapterListNameCity extends RecyclerView.Adapter<AdapterListNameCit
 
     private IDataRecycler dataCities;
     private OnItemClickListener itemClickListener;
+    private CitiesFragment fragment;
+    private int menuPosition;
 
-    public AdapterListNameCity(IDataRecycler dataCities) {
+    public AdapterListNameCity(IDataRecycler dataCities, CitiesFragment fragment) {
         this.dataCities = dataCities;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -40,6 +44,15 @@ public class AdapterListNameCity extends RecyclerView.Adapter<AdapterListNameCit
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CityModel cityModel = dataCities.getData(position);
         holder.nameCity.setText(cityModel.getNameCity());
+
+        holder.nameCity.setOnLongClickListener(v -> {
+            menuPosition = position;
+            return false;
+        });
+
+        if (fragment != null) {
+            fragment.registerForContextMenu(holder.nameCity);
+        }
     }
 
     @Override
@@ -53,6 +66,20 @@ public class AdapterListNameCity extends RecyclerView.Adapter<AdapterListNameCit
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void addCity(String nameCity) {
+        dataCities.addCity(nameCity);
+        if (dataCities.size() != 0) {
+            notifyItemInserted(dataCities.size() - 1);
+        } else notifyItemInserted(dataCities.size());
+        notifyDataSetChanged();
+    }
+
+    public void removeCity(int position) {
+        dataCities.removeCity(position);
+        notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -71,5 +98,9 @@ public class AdapterListNameCity extends RecyclerView.Adapter<AdapterListNameCit
                 listener.onItemClick(v, adapterPosition);
             });
         }
+    }
+
+    public int getMenuPosition() {
+        return menuPosition;
     }
 }

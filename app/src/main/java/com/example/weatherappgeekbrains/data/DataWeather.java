@@ -40,6 +40,16 @@ public class DataWeather implements IDataRecycler {
     }
 
     @Override
+    public void addCity(String nameCity) {
+
+    }
+
+    @Override
+    public void removeCity(int position) {
+
+    }
+
+    @Override
     public Resources getResources() {
         return resources;
     }

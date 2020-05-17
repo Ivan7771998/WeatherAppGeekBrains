@@ -1,6 +1,7 @@
 package com.example.weatherappgeekbrains.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.SharedPreferences;
@@ -25,6 +26,10 @@ public class BaseActivity extends AppCompatActivity {
     public boolean isDarkTheme() {
         SharedPreferences sharedPreferences = Tools.newInstance(getApplicationContext());
         return sharedPreferences.getBoolean(Constants.IS_DARK_THEME, false);
+    }
+
+    void initToolBar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
     }
 
     public void setDarkTheme(boolean isDarkTheme) {
