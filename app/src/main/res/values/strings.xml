@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WeatherAppGeekBrains</string>
     <string name="title_weather">Moscow</string>
+    <string name="title_list_cities">List cities</string>
     <string name="text_status_weather">Advantage sunny</string>
     <string name="text_temperature">15 °C</string>
     <string name="text_precipitation">Chance of precipitation: 0%</string>
@@ -19,6 +20,7 @@
     <string name="show_in_internet">show in internet</string>
     <string name="title_select_city">Selected city</string>
     <string name="title_ic_weather">Weather</string>
+    <string name="title_ic_history_weather">History weather</string>
     <string name="title_about_me">About Dev</string>
     <string name="title_settings">Settings</string>
     <string name="title_text_setTheme">Set night theme</string>
@@ -45,4 +47,14 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="sub_title_menu_main">Main</string>
+    <string name="sub_title_menu_other">Other</string>
+    <string name="title_weather_in">Weather in city</string>
+    <string name="remove">Delete</string>
+    <string name="input_city">Input city</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="title_alert_dialog">Add city</string>
+    <string name="text_add">Add</string>
 </resources>

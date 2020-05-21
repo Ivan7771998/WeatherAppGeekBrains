@@ -14,6 +14,9 @@ public class DataCities implements IDataRecycler {
 
     private List<CityModel> cityModelList;
     private Resources resources;
+    private int[] images;
+    private String[] urlCities;
+
 
     DataCities(Resources resources) {
         this.cityModelList = new ArrayList<>();
@@ -31,14 +34,24 @@ public class DataCities implements IDataRecycler {
     }
 
     @Override
+    public void addCity(String name) {
+        cityModelList.add(new CityModel(name,  images[0], urlCities[0]));
+    }
+
+    @Override
+    public void removeCity(int position) {
+        cityModelList.remove(position);
+    }
+
+    @Override
     public Resources getResources() {
         return resources;
     }
 
     void init() {
         String[] nameCities = resources.getStringArray(R.array.name_city);
-        int[] images = Tools.getImageArray(resources, R.array.icons_city);
-        String[] urlCities = resources.getStringArray(R.array.url_city_weather);
+        images = Tools.getImageArray(resources, R.array.icons_city);
+        urlCities = resources.getStringArray(R.array.url_city_weather);
         for (int i = 0; i < nameCities.length; i++) {
             cityModelList.add(new CityModel(nameCities[i], images[i], urlCities[i]));
         }

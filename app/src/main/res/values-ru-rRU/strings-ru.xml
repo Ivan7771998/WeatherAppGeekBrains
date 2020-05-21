@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">WeatherAppGeekBrains</string>
     <string name="title_weather">Москва</string>
+    <string name="title_list_cities">Список городов</string>
     <string name="text_status_weather">Преимущ. солнечно</string>
     <string name="text_temperature">15 °C</string>
     <string name="text_precipitation">Вероятность остадков: 0%</string>
@@ -20,6 +21,7 @@
     <string name="show_in_internet">Посмотреть в интернете</string>
     <string name="title_select_city">Выбранный город</string>
     <string name="title_ic_weather">Погода</string>
+    <string name="title_ic_history_weather">История погоды</string>
     <string name="title_about_me">О разработчике</string>
     <string name="title_settings">Настройки</string>
     <string name="title_text_setTheme">Установить черную тему</string>
@@ -46,4 +48,12 @@
     <string name="friday">Пятница</string>
     <string name="saturday">Суббота</string>
     <string name="sunday">Воскресенье</string>
+    <string name="sub_title_menu_main">Основное</string>
+    <string name="sub_title_menu_other">Прочее</string>
+    <string name="title_weather_in">Погода в городе</string>
+    <string name="remove">Удалить</string>
+    <string name="input_city">Введите город</string>
+    <string name="text_cancel">Отмена</string>
+    <string name="title_alert_dialog">Добавление города</string>
+    <string name="text_add">Добавить</string>
 </resources>
