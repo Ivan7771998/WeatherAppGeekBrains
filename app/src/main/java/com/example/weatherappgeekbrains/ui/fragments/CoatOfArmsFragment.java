@@ -114,14 +114,6 @@ public class CoatOfArmsFragment extends Fragment {
     public CoatOfArmsFragment() {
     }
 
-    static CoatOfArmsFragment newInstance(CityModel cityModel) {
-        CoatOfArmsFragment fragment = new CoatOfArmsFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(CITY_DATA, cityModel);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,6 +179,7 @@ public class CoatOfArmsFragment extends Fragment {
     private void showDialogError() {
         FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
         DialogErrorWithCity dialogErrorWithCity = DialogErrorWithCity.newInstance();
+        dialogErrorWithCity.setCancelable(false);
         dialogErrorWithCity.show(ft, "showDialogError");
     }
 

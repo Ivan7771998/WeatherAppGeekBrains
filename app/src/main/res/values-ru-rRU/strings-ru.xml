@@ -20,6 +20,7 @@
     <string name="show_in_internet">Посмотреть в интернете</string>
     <string name="title_select_city">Выбранный город</string>
     <string name="title_ic_weather">Погода</string>
+    <string name="title_ic_history_weather">История погоды</string>
     <string name="title_about_me">О разработчике</string>
     <string name="title_settings">Настройки</string>
     <string name="title_text_setTheme">Установить черную тему</string>
@@ -46,8 +47,6 @@
     <string name="friday">Пятница</string>
     <string name="saturday">Суббота</string>
     <string name="sunday">Воскресенье</string>
-<<<<<<< Updated upstream
-=======
     <string name="sub_title_menu_main">Основное</string>
     <string name="sub_title_menu_other">Прочее</string>
     <string name="title_weather_in">Погода в городе</string>
@@ -63,5 +62,4 @@
     <string name="title_about_app">О приложении</string>
     <string name="text_about_app">Приложение потихоньку дорабатывается и в скором времени будет похоже на более менее настоящее :)
         \nВерсия 1.0</string>
->>>>>>> Stashed changes
 </resources>

@@ -1,29 +1,15 @@
 package com.example.weatherappgeekbrains.ui.activities;
 
-<<<<<<< Updated upstream
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-=======
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
->>>>>>> Stashed changes
 
-import android.content.res.Configuration;
 import android.os.Bundle;
-<<<<<<< Updated upstream
-import android.view.View;
-import android.widget.FrameLayout;
-
-import com.example.weatherappgeekbrains.R;
-import com.example.weatherappgeekbrains.ui.fragments.AboutMeFragment;
-import com.example.weatherappgeekbrains.ui.fragments.CitiesFragment;
-import com.example.weatherappgeekbrains.ui.fragments.SettingsFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-=======
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -31,81 +17,48 @@ import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.interfaces.IFragmentDialog;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogAboutApp;
 import com.google.android.material.navigation.NavigationView;
->>>>>>> Stashed changes
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements IFragmentDialog {
 
-    private static final String ITEM_MENU = "currentItem";
+    private AppBarConfiguration mAppBarConfiguration;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
 
     @BindView(R.id.nav_view)
-    BottomNavigationView navView;
-    FrameLayout secondFragment;
-    private boolean isLandscape = false;
+    NavigationView navigationView;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(ITEM_MENU)) {
-                navView.setSelectedItemId(savedInstanceState.getInt(ITEM_MENU));
-            }
-        } else {
-            getSupportFragmentManager().beginTransaction().add(R.id.container_fragment,
-                    new CitiesFragment()).commit();
-        }
-        changeOrientation();
-        navView.setOnNavigationItemSelectedListener(listener);
+        initToolBar(toolbar);
+        initDrawer();
     }
 
-    private void changeOrientation() {
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            secondFragment = findViewById(R.id.coat_of_arms);
-            isLandscape = true;
-            changeStateVisibleSecondFrame(navView.getSelectedItemId());
-        } else {
-            isLandscape = false;
-        }
+    private void initDrawer() {
+        mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_weather, R.id.nav_about_dev, R.id.nav_settings)
+                .setDrawerLayout(drawer)
+                .build();
+
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
     }
 
-    private void changeStateVisibleSecondFrame(int currentItem) {
-        if (currentItem == R.id.navigation_weather) {
-            secondFragment.setVisibility(View.VISIBLE);
-        } else {
-            secondFragment.setVisibility(View.GONE);
-        }
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
-        Fragment selectedFragment;
-        switch (item.getItemId()) {
-            case R.id.navigation_about_dev:
-                selectedFragment = new AboutMeFragment();
-                break;
-            case R.id.navigation_settings:
-                selectedFragment = new SettingsFragment();
-                break;
-            default:
-                selectedFragment = new CitiesFragment();
-        }
-        if (isLandscape)
-            changeStateVisibleSecondFrame(item.getItemId());
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container_fragment, selectedFragment).commit();
-        return true;
-    };
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(ITEM_MENU, navView.getSelectedItemId());
-    }
-<<<<<<< Updated upstream
-=======
 
     @Override
     public void callBackDialog() {
@@ -129,5 +82,4 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
         }
         return super.onOptionsItemSelected(item);
     }
->>>>>>> Stashed changes
 }

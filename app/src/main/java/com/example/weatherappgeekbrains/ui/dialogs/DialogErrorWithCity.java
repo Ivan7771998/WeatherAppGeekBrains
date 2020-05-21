@@ -23,7 +23,6 @@ public class DialogErrorWithCity extends DialogFragment {
         MainActivity activity = (MainActivity) requireActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity())
                 .setTitle(getString(R.string.title_dialog_error))
-                .setCancelable(true)
                 .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
                     dismiss();
                     activity.callBackDialog();

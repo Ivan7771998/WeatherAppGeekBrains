@@ -21,6 +21,7 @@
     <string name="title_dialog_error">Error!</string>
     <string name="text_dialog_error">Current city not found!</string>
     <string name="title_ic_weather">Weather</string>
+    <string name="title_ic_history_weather">History weather</string>
     <string name="title_about_me">About Dev</string>
     <string name="title_settings">Settings</string>
     <string name="title_text_setTheme">Set night theme</string>
@@ -47,8 +48,6 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
-<<<<<<< Updated upstream
-=======
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="sub_title_menu_main">Main</string>
@@ -64,5 +63,5 @@
     <string name="title_about_app">About app</string>
     <string name="text_about_app">The application is slowly being finalized and will soon be more or less real :)
         \nVersion 1.0</string>
->>>>>>> Stashed changes
+    <string name="title_list_cities">Список городов</string>
 </resources>
