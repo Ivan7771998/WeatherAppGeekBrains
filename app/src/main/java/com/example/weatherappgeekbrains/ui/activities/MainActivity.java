@@ -1,10 +1,20 @@
 package com.example.weatherappgeekbrains.ui.activities;
 
+<<<<<<< Updated upstream
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+=======
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+>>>>>>> Stashed changes
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+<<<<<<< Updated upstream
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -13,11 +23,20 @@ import com.example.weatherappgeekbrains.ui.fragments.AboutMeFragment;
 import com.example.weatherappgeekbrains.ui.fragments.CitiesFragment;
 import com.example.weatherappgeekbrains.ui.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+=======
+import android.view.Menu;
+import android.view.MenuItem;
+
+import com.example.weatherappgeekbrains.R;
+import com.example.weatherappgeekbrains.interfaces.IFragmentDialog;
+import com.example.weatherappgeekbrains.ui.dialogs.DialogAboutApp;
+import com.google.android.material.navigation.NavigationView;
+>>>>>>> Stashed changes
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IFragmentDialog {
 
     private static final String ITEM_MENU = "currentItem";
 
@@ -85,4 +104,30 @@ public class MainActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putInt(ITEM_MENU, navView.getSelectedItemId());
     }
+<<<<<<< Updated upstream
+=======
+
+    @Override
+    public void callBackDialog() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController.popBackStack();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.info_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.item_about_app) {
+            DialogAboutApp dialogAboutApp = DialogAboutApp.newInstance();
+            dialogAboutApp.show(getSupportFragmentManager(), "DialogAboutApp");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+>>>>>>> Stashed changes
 }

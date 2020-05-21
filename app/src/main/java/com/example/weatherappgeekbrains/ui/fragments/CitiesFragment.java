@@ -1,13 +1,17 @@
 package com.example.weatherappgeekbrains.ui.fragments;
 
+<<<<<<< Updated upstream
 import android.content.Intent;
 import android.content.res.Configuration;
+=======
+>>>>>>> Stashed changes
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,12 +24,23 @@ import com.example.weatherappgeekbrains.adaters.AdapterListNameCity;
 import com.example.weatherappgeekbrains.data.DataCitiesBuilder;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CityModel;
+<<<<<<< Updated upstream
 import com.example.weatherappgeekbrains.ui.activities.MainActivity;
 import com.example.weatherappgeekbrains.ui.activities.SelectCityActivity;
+=======
+import com.example.weatherappgeekbrains.ui.dialogs.DialogAddNewCity;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.Objects;
+>>>>>>> Stashed changes
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.example.weatherappgeekbrains.ui.fragments.CoatOfArmsFragment.CITY_DATA;
 
 
 public class CitiesFragment extends Fragment {
@@ -101,6 +116,7 @@ public class CitiesFragment extends Fragment {
     }
 
     private void showCoatOfArms(CityModel cityModel) {
+<<<<<<< Updated upstream
         MainActivity mainActivity = (MainActivity) getActivity();
         assert mainActivity != null;
         if (isLandscapeOrientation) {
@@ -118,6 +134,12 @@ public class CitiesFragment extends Fragment {
             intent.putExtra("city", cityModel);
             startActivity(intent);
         }
+=======
+        Bundle args = new Bundle();
+        args.putParcelable(CITY_DATA, cityModel);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        navController.navigate(R.id.action_nav_weather_to_nav_selected_city_weather, args);
+>>>>>>> Stashed changes
     }
 
     @Override
@@ -125,4 +147,29 @@ public class CitiesFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+<<<<<<< Updated upstream
+=======
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.delete_item_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.remove_context) {
+            adapterListNameCity.removeCity(adapterListNameCity.getMenuPosition());
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void createAlertDialog() {
+        DialogAddNewCity dialogAddNewCity = DialogAddNewCity.newInstance(adapterListNameCity);
+        dialogAddNewCity.show(requireActivity().getSupportFragmentManager(), "DialogAddNewCity");
+    }
+>>>>>>> Stashed changes
 }

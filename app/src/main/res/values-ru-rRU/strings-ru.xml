@@ -46,4 +46,22 @@
     <string name="friday">Пятница</string>
     <string name="saturday">Суббота</string>
     <string name="sunday">Воскресенье</string>
+<<<<<<< Updated upstream
+=======
+    <string name="sub_title_menu_main">Основное</string>
+    <string name="sub_title_menu_other">Прочее</string>
+    <string name="title_weather_in">Погода в городе</string>
+    <string name="remove">Удалить</string>
+    <string name="input_city">Введите город</string>
+    <string name="text_cancel">Отмена</string>
+    <string name="title_alert_dialog">Добавление города</string>
+    <string name="text_add">Добавить</string>
+    <string name="title_dialog_error">Ошибка!</string>
+    <string name="text_dialog_error">Выбранный город не найден!</string>
+    <string name="ok">OK</string>
+    <string name="about_app">О приложении</string>
+    <string name="title_about_app">О приложении</string>
+    <string name="text_about_app">Приложение потихоньку дорабатывается и в скором времени будет похоже на более менее настоящее :)
+        \nВерсия 1.0</string>
+>>>>>>> Stashed changes
 </resources>

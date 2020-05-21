@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_weather">
+
+    <fragment
+        android:id="@+id/nav_weather"
+        android:name="com.example.weatherappgeekbrains.ui.fragments.CitiesFragment"
+        android:label="@string/title_list_cities"
+        tools:layout="@layout/fragment_cities" >
+        <action
+            android:id="@+id/action_nav_weather_to_nav_selected_city_weather"
+            app:destination="@id/nav_selected_city_weather" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_about_dev"
+        android:name="com.example.weatherappgeekbrains.ui.fragments.AboutMeFragment"
+        android:label="@string/title_about_me"
+        tools:layout="@layout/fragment_about_me">
+    </fragment>
+
+    <fragment
+    android:id="@+id/nav_settings"
+    android:name="com.example.weatherappgeekbrains.ui.fragments.SettingsFragment"
+    android:label="@string/title_settings"
+    tools:layout="@layout/fragment_settings"/>
+
+    <fragment
+        android:id="@+id/nav_selected_city_weather"
+        android:name="com.example.weatherappgeekbrains.ui.fragments.CoatOfArmsFragment"
+        android:label="@string/title_select_city"
+        tools:layout="@layout/fragment_coat_of_arms">
+        <action
+            android:id="@+id/action_nav_selected_city_weather_to_nav_weather"
+            app:destination="@id/nav_weather" />
+        <argument
+            android:name="city"
+            app:argType="com.example.weatherappgeekbrains.models.CityModel" />
+    </fragment>
+</navigation>
