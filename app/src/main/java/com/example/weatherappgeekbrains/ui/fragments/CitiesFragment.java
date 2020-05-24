@@ -1,15 +1,15 @@
 package com.example.weatherappgeekbrains.ui.fragments;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.adaters.AdapterListNameCity;
@@ -28,16 +27,14 @@ import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.ui.activities.MainActivity;
 import com.example.weatherappgeekbrains.ui.activities.SelectCityActivity;
-import com.google.android.material.button.MaterialButton;
+import com.example.weatherappgeekbrains.ui.dialogs.DialogAddNewCity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.example.weatherappgeekbrains.ui.fragments.CoatOfArmsFragment.CITY_DATA;
 
 
 public class CitiesFragment extends Fragment {
@@ -116,9 +113,10 @@ public class CitiesFragment extends Fragment {
     }
 
     private void showCoatOfArms(CityModel cityModel) {
-        Intent intent = new Intent(requireActivity(), SelectCityActivity.class);
-        intent.putExtra("city", cityModel);
-        startActivity(intent);
+        Bundle args = new Bundle();
+        args.putParcelable(CITY_DATA, cityModel);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        navController.navigate(R.id.action_nav_weather_to_nav_selected_city_weather, args);
     }
 
     @Override
@@ -145,22 +143,7 @@ public class CitiesFragment extends Fragment {
     }
 
     private void createAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        View view = requireActivity().getLayoutInflater().inflate(R.layout.alert_add_city, null);
-        MaterialButton btnAdd = view.findViewById(R.id.btn_add);
-        MaterialButton btnCancel = view.findViewById(R.id.btn_cancel);
-        TextInputEditText textCity = view.findViewById(R.id.textCity);
-        builder.setView(view);
-        AlertDialog alert = builder.create();
-        btnAdd.setOnClickListener(v -> {
-            if (!Objects.requireNonNull(textCity.getText()).toString().isEmpty()) {
-                adapterListNameCity.addCity(textCity.getText().toString());
-                alert.cancel();
-            }
-        });
-        btnCancel.setOnClickListener(v -> {
-            alert.cancel();
-        });
-        alert.show();
+        DialogAddNewCity dialogAddNewCity = DialogAddNewCity.newInstance(adapterListNameCity);
+        dialogAddNewCity.show(requireActivity().getSupportFragmentManager(), "DialogAddNewCity");
     }
 }

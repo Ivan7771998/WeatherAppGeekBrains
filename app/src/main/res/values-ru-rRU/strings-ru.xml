@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">WeatherAppGeekBrains</string>
     <string name="title_weather">Москва</string>
-    <string name="title_list_cities">Список городов</string>
     <string name="text_status_weather">Преимущ. солнечно</string>
     <string name="text_temperature">15 °C</string>
     <string name="text_precipitation">Вероятность остадков: 0%</string>
@@ -56,4 +55,11 @@
     <string name="text_cancel">Отмена</string>
     <string name="title_alert_dialog">Добавление города</string>
     <string name="text_add">Добавить</string>
+    <string name="title_dialog_error">Ошибка!</string>
+    <string name="text_dialog_error">Выбранный город не найден!</string>
+    <string name="ok">OK</string>
+    <string name="about_app">О приложении</string>
+    <string name="title_about_app">О приложении</string>
+    <string name="text_about_app">Приложение потихоньку дорабатывается и в скором времени будет похоже на более менее настоящее :)
+        \nВерсия 1.0</string>
 </resources>

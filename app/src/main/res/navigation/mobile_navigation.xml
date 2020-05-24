@@ -10,6 +10,9 @@
         android:name="com.example.weatherappgeekbrains.ui.fragments.CitiesFragment"
         android:label="@string/title_list_cities"
         tools:layout="@layout/fragment_cities" >
+        <action
+            android:id="@+id/action_nav_weather_to_nav_selected_city_weather"
+            app:destination="@id/nav_selected_city_weather" />
     </fragment>
 
 
@@ -25,4 +28,17 @@
         android:name="com.example.weatherappgeekbrains.ui.fragments.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings"/>
+
+    <fragment
+        android:id="@+id/nav_selected_city_weather"
+        android:name="com.example.weatherappgeekbrains.ui.fragments.CoatOfArmsFragment"
+        android:label="@string/title_select_city"
+        tools:layout="@layout/fragment_coat_of_arms">
+        <action
+            android:id="@+id/action_nav_selected_city_weather_to_nav_weather"
+            app:destination="@id/nav_weather" />
+        <argument
+            android:name="city"
+            app:argType="com.example.weatherappgeekbrains.models.CityModel" />
+    </fragment>
 </navigation>

@@ -10,6 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,7 @@ import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.adaters.AdapterListWeatherWeek;
 import com.example.weatherappgeekbrains.data.DataWeatherBuilder;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
+import com.example.weatherappgeekbrains.interfaces.IFragmentDialog;
 import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
 import com.example.weatherappgeekbrains.network.IRetrofitRequests;
@@ -33,6 +37,7 @@ import com.example.weatherappgeekbrains.network.RetrofitClientInstance;
 import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.tools.Tools;
 import com.example.weatherappgeekbrains.tools.UntilTimes;
+import com.example.weatherappgeekbrains.ui.dialogs.DialogErrorWithCity;
 import com.google.android.material.button.MaterialButton;
 
 import butterknife.BindView;
@@ -46,7 +51,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CoatOfArmsFragment extends Fragment {
 
-    private static final String CITY_DATA = "city";
+    static final String CITY_DATA = "city";
     private CityModel cityModel;
     private CurrentWeatherModel currentWeather;
 
@@ -109,14 +114,6 @@ public class CoatOfArmsFragment extends Fragment {
     public CoatOfArmsFragment() {
     }
 
-    static CoatOfArmsFragment newInstance(CityModel cityModel) {
-        CoatOfArmsFragment fragment = new CoatOfArmsFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(CITY_DATA, cityModel);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,9 +133,13 @@ public class CoatOfArmsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-        getWeatherData();
-        IDataRecycler iDataRecycler = initDataWeather();
-        initListWeather(iDataRecycler);
+        try {
+            getWeatherData();
+            IDataRecycler iDataRecycler = initDataWeather();
+            initListWeather(iDataRecycler);
+        } catch (Exception e) {
+            Log.e("TAG", e.getMessage());
+        }
     }
 
     private void getWeatherData() {
@@ -157,64 +158,80 @@ public class CoatOfArmsFragment extends Fragment {
 
                     @Override
                     public void onSuccess(CurrentWeatherModel currentWeatherModel) {
-                        currentWeather = currentWeatherModel;
-                        progressBar.setVisibility(View.GONE);
-                        mainContainer.setVisibility(View.VISIBLE);
-                        initView();
+                        try {
+                            currentWeather = currentWeatherModel;
+                            progressBar.setVisibility(View.GONE);
+                            mainContainer.setVisibility(View.VISIBLE);
+                            initView();
+                        } catch (Exception e) {
+                            Log.e("TAG", "fragment onDetach()");
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.e("REQUEST", e.toString());
+                        showDialogError();
                     }
                 });
     }
 
+    private void showDialogError() {
+        FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+        DialogErrorWithCity dialogErrorWithCity = DialogErrorWithCity.newInstance();
+        dialogErrorWithCity.setCancelable(false);
+        dialogErrorWithCity.show(ft, "showDialogError");
+    }
+
     private void initView() {
-        textTemperature.setText(new StringBuilder(
-                Double.valueOf(currentWeather.getMain().getTemp().toString()).intValue()
-                        + " " +
-                        requireActivity().getResources().getString(R.string.temperature_values)));
-        String descriptionWeather = currentWeather.getWeather().get(0).getDescription();
-        textStatusWeather.setText(new StringBuilder(descriptionWeather.substring(0, 1).toUpperCase() +
-                descriptionWeather.substring(1).toLowerCase()));
-        textDayTimeNow.setText(new StringBuilder(Tools.getDayWeek(getResources()) +
-                " " + UntilTimes.getCurrentTime()));
-        textFeelLike.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
-                .getFeelsLike().toString()).intValue()
-                + " " +
-                requireActivity().getResources().getString(R.string.temperature_values)));
-        textMinTemp.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
-                .getTempMin().toString()).intValue()
-                + " " +
-                requireActivity().getResources().getString(R.string.temperature_values)));
-        textMaxTemp.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
-                .getTempMax().toString()).intValue()
-                + " " +
-                requireActivity().getResources().getString(R.string.temperature_values)));
-        textPressure.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
-                .getPressure().toString()).intValue()
-                + " " +
-                requireActivity().getResources().getString(R.string.pressure_values)));
-        textHumidity.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
-                .getHumidity().toString()).intValue()
-                + " " +
-                requireActivity().getResources().getString(R.string.humidity_values)));
-        textWindSpeed.setText(new StringBuilder(Double.valueOf(currentWeather.getWind()
-                .getSpeed().toString()).longValue()
-                + " " +
-                requireActivity().getResources().getString(R.string.wind_values)));
-        textSunRise.setText(UntilTimes.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunrise())));
-        textSunSet.setText(UntilTimes.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunset())));
-        textVisibility.setText(new StringBuilder(currentWeather.getVisibility() / 1000 + " "
-                + requireActivity().getResources().getString(R.string.visible_values)));
-        titleWeather.setText(cityModel.getNameCity());
-        imageCity.setImageDrawable(requireActivity()
-                .getDrawable(cityModel.getImageId()));
-        btnMoreInfo.setOnClickListener(v -> {
-            startActivity(new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse(cityModel.getUrlCity())));
-        });
+        try {
+            textTemperature.setText(new StringBuilder(
+                    Double.valueOf(currentWeather.getMain().getTemp().toString()).intValue()
+                            + " " +
+                            requireActivity().getResources().getString(R.string.temperature_values)));
+            String descriptionWeather = currentWeather.getWeather().get(0).getDescription();
+            textStatusWeather.setText(new StringBuilder(descriptionWeather.substring(0, 1).toUpperCase() +
+                    descriptionWeather.substring(1).toLowerCase()));
+            textDayTimeNow.setText(new StringBuilder(Tools.getDayWeek(getResources()) +
+                    " " + UntilTimes.getCurrentTime()));
+            textFeelLike.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
+                    .getFeelsLike().toString()).intValue()
+                    + " " +
+                    requireActivity().getResources().getString(R.string.temperature_values)));
+            textMinTemp.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
+                    .getTempMin().toString()).intValue()
+                    + " " +
+                    requireActivity().getResources().getString(R.string.temperature_values)));
+            textMaxTemp.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
+                    .getTempMax().toString()).intValue()
+                    + " " +
+                    requireActivity().getResources().getString(R.string.temperature_values)));
+            textPressure.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
+                    .getPressure().toString()).intValue()
+                    + " " +
+                    requireActivity().getResources().getString(R.string.pressure_values)));
+            textHumidity.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
+                    .getHumidity().toString()).intValue()
+                    + " " +
+                    requireActivity().getResources().getString(R.string.humidity_values)));
+            textWindSpeed.setText(new StringBuilder(Double.valueOf(currentWeather.getWind()
+                    .getSpeed().toString()).longValue()
+                    + " " +
+                    requireActivity().getResources().getString(R.string.wind_values)));
+            textSunRise.setText(UntilTimes.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunrise())));
+            textSunSet.setText(UntilTimes.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunset())));
+            textVisibility.setText(new StringBuilder(currentWeather.getVisibility() / 1000 + " "
+                    + requireActivity().getResources().getString(R.string.visible_values)));
+            titleWeather.setText(cityModel.getNameCity());
+            imageCity.setImageDrawable(requireActivity()
+                    .getDrawable(cityModel.getImageId()));
+            btnMoreInfo.setOnClickListener(v -> {
+                startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse(cityModel.getUrlCity())));
+            });
+        } catch (Exception e) {
+            Log.e("TAG", "fragment onDetach()");
+        }
     }
 
     private IDataRecycler initDataWeather() {
@@ -246,8 +263,8 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDetach() {
+        super.onDetach();
         unbinder.unbind();
     }
 }
