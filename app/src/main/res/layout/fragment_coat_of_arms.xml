@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/backgroundcolor">
+    android:background="@drawable/wer">
+<!--    android:background="?attr/backgroundcolor"-->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             android:id="@+id/mainContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/backgroundcolor"
+            android:background="#A4186BD1"
             android:visibility="visible"
             tools:context=".ui.activities.MainActivity">
 
@@ -27,7 +28,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:text="@string/title_weather"
-                android:textColor="?attr/textcolor"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/size_title_weather"
                 android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="@+id/textTemperature"
@@ -65,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/text_day_time_now"
-                android:textColor="?attr/textcolor"
+                android:textColor="@android:color/white"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/imageCity"
                 app:layout_constraintStart_toStartOf="@+id/imageWeather"
@@ -87,6 +88,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
                     android:orientation="horizontal">
 
                     <TextView
@@ -95,7 +97,7 @@
                         android:layout_weight="2"
                         android:paddingStart="10dp"
                         android:text="@string/title_feel_like"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:ignore="RtlSymmetry" />
 
@@ -106,7 +108,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:text="25°C " />
 
@@ -124,7 +126,7 @@
                         android:layout_weight="2"
                         android:paddingStart="10dp"
                         android:text="@string/title_min_temp"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:ignore="RtlSymmetry" />
 
@@ -135,7 +137,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:text="25°C " />
 
@@ -153,7 +155,7 @@
                         android:layout_weight="2"
                         android:paddingStart="10dp"
                         android:text="@string/title_max_temp"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:ignore="RtlSymmetry" />
 
@@ -164,7 +166,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:text="25°C " />
 
@@ -182,7 +184,7 @@
                         android:layout_weight="2"
                         android:paddingStart="10dp"
                         android:text="@string/title_humidity"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:ignore="RtlSymmetry" />
 
@@ -193,7 +195,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:text="35%" />
 
@@ -211,7 +213,7 @@
                         android:layout_weight="1"
                         android:paddingStart="10dp"
                         android:text="@string/title_pressure"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:ignore="RtlSymmetry" />
 
@@ -222,7 +224,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:text="35 мм рт. ст." />
 
@@ -240,7 +242,7 @@
                         android:layout_weight="2"
                         android:paddingStart="10dp"
                         android:text="@string/title_speed_wind"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:ignore="RtlSymmetry" />
 
@@ -251,7 +253,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:text="2 м/с" />
 
@@ -269,7 +271,7 @@
                         android:layout_weight="1"
                         android:paddingStart="10dp"
                         android:text="@string/title_sunrise"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:ignore="RtlSymmetry" />
 
@@ -280,7 +282,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:text="08:15" />
 
@@ -298,7 +300,7 @@
                         android:layout_weight="1"
                         android:paddingStart="10dp"
                         android:text="@string/title_sunset"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:ignore="RtlSymmetry" />
 
@@ -309,7 +311,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:text="22:15" />
 
@@ -327,7 +329,7 @@
                         android:layout_weight="1"
                         android:paddingStart="10dp"
                         android:text="@string/title_visibility"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:ignore="RtlSymmetry" />
 
@@ -338,7 +340,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:textColor="?attr/textcolor"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp"
                         tools:text="10 км" />
 
@@ -352,7 +354,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/text_status_weather"
-                android:textColor="?attr/textcolor"
+                android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="@+id/textTemperature"
                 app:layout_constraintStart_toStartOf="@+id/textTemperature"
                 app:layout_constraintTop_toBottomOf="@+id/textTemperature" />
@@ -362,7 +364,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_select_city"
-                android:textColor="?attr/textcolor"
+                android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/textStatusWeather"
                 app:layout_constraintEnd_toEndOf="@+id/titleWeather"
                 app:layout_constraintStart_toStartOf="@+id/titleWeather"
@@ -377,7 +379,7 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:text="@string/text_temperature"
-                android:textColor="?attr/textcolor"
+                android:textColor="@android:color/white"
                 android:textSize="30sp"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="@+id/linearLayout"
