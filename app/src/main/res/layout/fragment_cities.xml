@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/backgroundcolor"
+    android:background="@drawable/wer"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
+        android:background="#A4186BD1"
         android:layout_height="match_parent">
 
 

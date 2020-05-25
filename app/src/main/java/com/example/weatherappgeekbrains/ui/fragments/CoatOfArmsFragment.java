@@ -1,6 +1,8 @@
 package com.example.weatherappgeekbrains.ui.fragments;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,13 +34,19 @@ import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.interfaces.IFragmentDialog;
 import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
+import com.example.weatherappgeekbrains.models.newModel.NewMain;
 import com.example.weatherappgeekbrains.network.IRetrofitRequests;
 import com.example.weatherappgeekbrains.network.RetrofitClientInstance;
 import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.tools.Tools;
 import com.example.weatherappgeekbrains.tools.UntilTimes;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogErrorWithCity;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -135,6 +143,7 @@ public class CoatOfArmsFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         try {
             getWeatherData();
+            getWeatherFromCoordinate();
             IDataRecycler iDataRecycler = initDataWeather();
             initListWeather(iDataRecycler);
         } catch (Exception e) {
@@ -174,6 +183,53 @@ public class CoatOfArmsFragment extends Fragment {
                         showDialogError();
                     }
                 });
+    }
+
+    private void getWeatherFromCoordinate() {
+        IRetrofitRequests retrofitRequests = RetrofitClientInstance.getRetrofitInstance()
+                .create(IRetrofitRequests.class);
+        LatLng coordCity = getCoordinateCity(cityModel.getNameCity());
+        retrofitRequests.getCurrentWeatherAndWeek(String.valueOf(coordCity.latitude),
+                String.valueOf(coordCity.longitude), "metric", "ru",
+                Constants.API_KEY)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<NewMain>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(NewMain newMain) {
+                        Log.e("TAG", newMain.toString());
+                        System.out.println();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+
+    private LatLng getCoordinateCity(String nameCity) {
+        LatLng ll = null;
+        if (Geocoder.isPresent()) {
+            try {
+                Geocoder gc = new Geocoder(getContext());
+                List<Address> addresses = gc.getFromLocationName(nameCity, 1);
+                for (Address a : addresses) {
+                    if (a.hasLatitude() && a.hasLongitude()) {
+                        ll = new LatLng(a.getLatitude(), a.getLongitude());
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ll;
     }
 
     private void showDialogError() {
@@ -251,6 +307,7 @@ public class CoatOfArmsFragment extends Fragment {
                         LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setAdapter(adapterListWeatherWeek);
+
     }
 
     int getImage() {
