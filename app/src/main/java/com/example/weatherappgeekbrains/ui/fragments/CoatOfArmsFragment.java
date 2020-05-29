@@ -13,8 +13,6 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,14 +22,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.weatherappgeekbrains.App;
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.adaters.AdapterListWeatherWeek;
 import com.example.weatherappgeekbrains.data.DataWeatherBuilder;
+import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
-import com.example.weatherappgeekbrains.interfaces.IFragmentDialog;
 import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
 import com.example.weatherappgeekbrains.models.newModel.NewMain;
@@ -45,7 +45,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,7 +59,8 @@ import io.reactivex.schedulers.Schedulers;
 public class CoatOfArmsFragment extends Fragment {
 
     static final String CITY_DATA = "city";
-    private CityModel cityModel;
+    private long idCity;
+    private EntityCity currentCity;
     private CurrentWeatherModel currentWeather;
 
     @BindView(R.id.btnMoreInfo)
@@ -117,6 +117,21 @@ public class CoatOfArmsFragment extends Fragment {
     @BindView(R.id.textDayTimeNow)
     TextView textDayTimeNow;
 
+    @BindView(R.id.prevLayout)
+    LinearLayout prevLayout;
+
+    @BindView(R.id.moreInfoLayout)
+    LinearLayout moreInfoLayout;
+
+    @BindView(R.id.txtMoreInfo)
+    TextView txtMoreInfo;
+
+    @BindView(R.id.txtHideInfo)
+    TextView txtHideInfo;
+
+    @BindView(R.id.imgPrevView)
+    ImageView imgPrevView;
+
     private Unbinder unbinder;
 
     public CoatOfArmsFragment() {
@@ -126,7 +141,8 @@ public class CoatOfArmsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            cityModel = getArguments().getParcelable(CITY_DATA);
+            idCity = getArguments().getLong(CITY_DATA);
+            currentCity = App.getInstance().getCityDao().getCityById(idCity);
         }
     }
 
@@ -144,8 +160,8 @@ public class CoatOfArmsFragment extends Fragment {
         try {
             getWeatherData();
             getWeatherFromCoordinate();
-            IDataRecycler iDataRecycler = initDataWeather();
-            initListWeather(iDataRecycler);
+            initListWeather(initDataWeather());
+            onClickPrevView();
         } catch (Exception e) {
             Log.e("TAG", e.getMessage());
         }
@@ -156,7 +172,7 @@ public class CoatOfArmsFragment extends Fragment {
         mainContainer.setVisibility(View.GONE);
         IRetrofitRequests retrofitRequests = RetrofitClientInstance.getRetrofitInstance()
                 .create(IRetrofitRequests.class);
-        retrofitRequests.getCurrentWeather(cityModel.getNameCity(), "metric", "ru",
+        retrofitRequests.getCurrentWeather(currentCity.nameCity, "metric", "ru",
                 Constants.API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -188,7 +204,7 @@ public class CoatOfArmsFragment extends Fragment {
     private void getWeatherFromCoordinate() {
         IRetrofitRequests retrofitRequests = RetrofitClientInstance.getRetrofitInstance()
                 .create(IRetrofitRequests.class);
-        LatLng coordCity = getCoordinateCity(cityModel.getNameCity());
+        LatLng coordCity = getCoordinateCity(currentCity.nameCity);
         retrofitRequests.getCurrentWeatherAndWeek(String.valueOf(coordCity.latitude),
                 String.valueOf(coordCity.longitude), "metric", "ru",
                 Constants.API_KEY)
@@ -239,6 +255,26 @@ public class CoatOfArmsFragment extends Fragment {
         dialogErrorWithCity.show(ft, "showDialogError");
     }
 
+    private void onClickPrevView() {
+        prevLayout.setOnClickListener(v -> workWithPrevView());
+    }
+
+    private void workWithPrevView() {
+        if (txtMoreInfo.getVisibility() == View.VISIBLE) {
+            moreInfoLayout.setVisibility(View.VISIBLE);
+            txtMoreInfo.setVisibility(View.INVISIBLE);
+            txtHideInfo.setVisibility(View.VISIBLE);
+            assert getActivity() != null;
+            imgPrevView.setImageDrawable(getActivity().getDrawable(R.drawable.ic_expand_less_24dp));
+        } else {
+            moreInfoLayout.setVisibility(View.GONE);
+            txtMoreInfo.setVisibility(View.VISIBLE);
+            txtHideInfo.setVisibility(View.INVISIBLE);
+            assert getActivity() != null;
+            imgPrevView.setImageDrawable(getActivity().getDrawable(R.drawable.ic_expand_more_24dp));
+        }
+    }
+
     private void initView() {
         try {
             textTemperature.setText(new StringBuilder(
@@ -278,17 +314,16 @@ public class CoatOfArmsFragment extends Fragment {
             textSunSet.setText(UntilTimes.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunset())));
             textVisibility.setText(new StringBuilder(currentWeather.getVisibility() / 1000 + " "
                     + requireActivity().getResources().getString(R.string.visible_values)));
-            titleWeather.setText(cityModel.getNameCity());
-            imageCity.setImageDrawable(requireActivity()
-                    .getDrawable(cityModel.getImageId()));
+            titleWeather.setText(currentCity.nameCity);
             btnMoreInfo.setOnClickListener(v -> {
-                startActivity(new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse(cityModel.getUrlCity())));
+//                startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+//                        Uri.parse(cityModel.getUrlCity())));
             });
         } catch (Exception e) {
             Log.e("TAG", "fragment onDetach()");
         }
     }
+
 
     private IDataRecycler initDataWeather() {
         return new DataWeatherBuilder()
@@ -307,16 +342,6 @@ public class CoatOfArmsFragment extends Fragment {
                         LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setAdapter(adapterListWeatherWeek);
-
-    }
-
-    int getImage() {
-        return getCityModel().getImageId();
-    }
-
-    private CityModel getCityModel() {
-        assert getArguments() != null;
-        return getArguments().getParcelable(CITY_DATA);
     }
 
     @Override

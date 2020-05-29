@@ -20,9 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.weatherappgeekbrains.App;
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.adaters.AdapterListNameCity;
 import com.example.weatherappgeekbrains.data.DataCitiesBuilder;
+import com.example.weatherappgeekbrains.database.CityDao;
+import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.ui.activities.MainActivity;
@@ -39,8 +42,9 @@ import static com.example.weatherappgeekbrains.ui.fragments.CoatOfArmsFragment.C
 
 public class CitiesFragment extends Fragment {
 
-    private CityModel currentCityModel;
+    private EntityCity currentCityModel;
     private IDataRecycler iDataRecycler;
+    private CityDao cityDao;
 
     @BindView(R.id.list_cities)
     RecyclerView recyclerView;
@@ -73,22 +77,25 @@ public class CitiesFragment extends Fragment {
         if (savedInstanceState != null) {
             currentCityModel = savedInstanceState.getParcelable("city");
         } else {
-            CityModel cityModel = iDataRecycler.getData(0);
-            currentCityModel = new CityModel(cityModel.getNameCity(), cityModel.getImageId(),
-                    cityModel.getUrlCity());
+//            CityModel cityModel = iDataRecycler.getData(0);
+//            currentCityModel = new CityModel(cityModel.getNameCity(), cityModel.getImageId(),
+//                    cityModel.getUrlCity());
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable("city", currentCityModel);
+       // outState.putParcelable("city", currentCityModel);
         super.onSaveInstanceState(outState);
     }
 
+    private void initCityDao(){
+        cityDao = App.getInstance().getCityDao();
+    }
+
     private IDataRecycler initDataCities() {
-        return new DataCitiesBuilder()
-                .setResources(getResources())
-                .build();
+        initCityDao();
+        return new DataCitiesBuilder().setResources(cityDao).build();
     }
 
     private void initFAB() {
@@ -108,13 +115,13 @@ public class CitiesFragment extends Fragment {
 
         adapterListNameCity.setOnItemClickListener((view, position) -> {
             currentCityModel = iDataRecycler.getData(position);
-            showCoatOfArms(currentCityModel);
+            showCoatOfArms(currentCityModel.id);
         });
     }
 
-    private void showCoatOfArms(CityModel cityModel) {
+    private void showCoatOfArms(long idCity) {
         Bundle args = new Bundle();
-        args.putParcelable(CITY_DATA, cityModel);
+        args.putLong(CITY_DATA, idCity);
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigate(R.id.action_nav_weather_to_nav_selected_city_weather, args);
     }

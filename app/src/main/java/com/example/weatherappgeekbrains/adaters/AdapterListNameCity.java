@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weatherappgeekbrains.R;
+import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.ui.fragments.CitiesFragment;
@@ -42,8 +43,8 @@ public class AdapterListNameCity extends RecyclerView.Adapter<AdapterListNameCit
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CityModel cityModel = dataCities.getData(position);
-        holder.nameCity.setText(cityModel.getNameCity());
+        EntityCity cityModel = dataCities.getData(position);
+        holder.nameCity.setText(cityModel.nameCity);
 
         holder.nameCity.setOnLongClickListener(v -> {
             menuPosition = position;
