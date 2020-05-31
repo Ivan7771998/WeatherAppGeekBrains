@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wer">
-<!--    android:background="?attr/backgroundcolor"-->
+    <!--    android:background="?attr/backgroundcolor"-->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -72,24 +72,110 @@
                 app:layout_constraintStart_toStartOf="@+id/imageWeather"
                 app:layout_constraintTop_toBottomOf="@+id/imageCity" />
 
+            <TextView
+                android:id="@+id/textStatusWeather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/text_status_weather"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="@+id/textTemperature"
+                app:layout_constraintStart_toStartOf="@+id/textTemperature"
+                app:layout_constraintTop_toBottomOf="@+id/textTemperature" />
+
+            <TextView
+                android:id="@+id/titleCurrentCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_select_city"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/textStatusWeather"
+                app:layout_constraintEnd_toEndOf="@+id/titleWeather"
+                app:layout_constraintStart_toStartOf="@+id/titleWeather"
+                app:layout_constraintTop_toBottomOf="@+id/titleWeather"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textTemperature"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/text_temperature"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="@+id/moreInfoLayout"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/prevLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="35dp"
+                android:background="#8F2D46A5"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textDayTimeNow">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="3">
+
+                    <TextView
+                        android:id="@+id/txtMoreInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Больше информации"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txtHideInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Скрыть"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/imgPrevView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_expand_more_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/moreInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/list_week"
                 app:layout_constraintStart_toStartOf="@+id/list_week"
-                app:layout_constraintTop_toBottomOf="@+id/textDayTimeNow">
+                app:layout_constraintTop_toBottomOf="@+id/prevLayout">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:textColor="@android:color/white">
 
                     <TextView
                         android:layout_width="0dp"
@@ -105,7 +191,7 @@
                         android:id="@+id/textFeelLike"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:textColor="@android:color/white"
@@ -134,7 +220,7 @@
                         android:id="@+id/textMinTemp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:textColor="@android:color/white"
@@ -163,7 +249,7 @@
                         android:id="@+id/textMaxTemp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:textColor="@android:color/white"
@@ -192,7 +278,7 @@
                         android:id="@+id/textHumidity"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:textColor="@android:color/white"
@@ -250,7 +336,7 @@
                         android:id="@+id/textWindSpeed"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:textColor="@android:color/white"
@@ -279,7 +365,7 @@
                         android:id="@+id/textSunRise"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:textColor="@android:color/white"
@@ -308,7 +394,7 @@
                         android:id="@+id/textSunSet"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:textColor="@android:color/white"
@@ -337,7 +423,7 @@
                         android:id="@+id/textVisibility"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="25dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_weight="1"
                         android:gravity="end"
                         android:textColor="@android:color/white"
@@ -348,44 +434,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textStatusWeather"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/text_status_weather"
-                android:textColor="@android:color/white"
-                app:layout_constraintEnd_toEndOf="@+id/textTemperature"
-                app:layout_constraintStart_toStartOf="@+id/textTemperature"
-                app:layout_constraintTop_toBottomOf="@+id/textTemperature" />
-
-            <TextView
-                android:id="@+id/titleCurrentCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_select_city"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/textStatusWeather"
-                app:layout_constraintEnd_toEndOf="@+id/titleWeather"
-                app:layout_constraintStart_toStartOf="@+id/titleWeather"
-                app:layout_constraintTop_toBottomOf="@+id/titleWeather"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <TextView
-                android:id="@+id/textTemperature"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:text="@string/text_temperature"
-                android:textColor="@android:color/white"
-                android:textSize="30sp"
-                android:textStyle="normal"
-                app:layout_constraintStart_toStartOf="@+id/linearLayout"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_week"
                 android:layout_width="0dp"
@@ -395,7 +443,7 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                app:layout_constraintTop_toBottomOf="@+id/moreInfoLayout"
                 tools:listitem="@layout/item_list_week_weather" />
 
 
@@ -408,6 +456,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="?attr/buttoncolor"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="@string/title_btn_open_in_internet"
                 app:layout_constraintBottom_toBottomOf="parent"
