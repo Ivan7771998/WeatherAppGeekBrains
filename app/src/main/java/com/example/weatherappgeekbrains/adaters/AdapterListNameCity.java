@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
-import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.ui.fragments.CitiesFragment;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -70,7 +69,7 @@ public class AdapterListNameCity extends RecyclerView.Adapter<AdapterListNameCit
     }
 
     public void addCity(String nameCity) {
-        dataCities.addCity(nameCity);
+        dataCities.addItem(nameCity);
         if (dataCities.size() != 0) {
             notifyItemInserted(dataCities.size() - 1);
         } else notifyItemInserted(dataCities.size());

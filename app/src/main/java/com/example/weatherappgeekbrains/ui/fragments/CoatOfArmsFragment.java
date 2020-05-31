@@ -1,12 +1,9 @@
 package com.example.weatherappgeekbrains.ui.fragments;
 
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -31,34 +28,24 @@ import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.adaters.AdapterListWeatherWeek;
 import com.example.weatherappgeekbrains.data.DataWeatherBuilder;
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
+import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
-import com.example.weatherappgeekbrains.models.CityModel;
 import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
-import com.example.weatherappgeekbrains.models.newModel.NewMain;
-import com.example.weatherappgeekbrains.network.IRetrofitRequests;
-import com.example.weatherappgeekbrains.network.RetrofitClientInstance;
-import com.example.weatherappgeekbrains.tools.Constants;
+import com.example.weatherappgeekbrains.network.Repository;
+import com.example.weatherappgeekbrains.tools.MySharedPref;
 import com.example.weatherappgeekbrains.tools.Tools;
 import com.example.weatherappgeekbrains.tools.UntilTimes;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogErrorWithCity;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
-
-import java.io.IOException;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
 
 public class CoatOfArmsFragment extends Fragment {
 
-    static final String CITY_DATA = "city";
+    static final String CITY_DATA_FR = "city_fragment";
+    static final String CITY_DATA_HISTORY = "city_history_fragment";
     private long idCity;
     private EntityCity currentCity;
     private CurrentWeatherModel currentWeather;
@@ -141,10 +128,26 @@ public class CoatOfArmsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            idCity = getArguments().getLong(CITY_DATA);
-            currentCity = App.getInstance().getCityDao().getCityById(idCity);
+            if (getArguments().containsKey(CITY_DATA_FR)) {
+                idCity = getArguments().getLong(CITY_DATA_FR);
+                currentCity = App.getInstance().getCityDao().getCityById(idCity);
+            } else {
+                currentCity = App.getInstance()
+                        .getCityDao().getCityByName(getArguments().getString(CITY_DATA_HISTORY));
+            }
+            MySharedPref.setCurrentCity(currentCity.nameCity);
         }
+
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
+            @Override
+            public void handleOnBackPressed() {
+                MySharedPref.setCurrentCity("");
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -158,8 +161,7 @@ public class CoatOfArmsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         try {
-            getWeatherData();
-            getWeatherFromCoordinate();
+            getWeather();
             initListWeather(initDataWeather());
             onClickPrevView();
         } catch (Exception e) {
@@ -167,92 +169,34 @@ public class CoatOfArmsFragment extends Fragment {
         }
     }
 
-    private void getWeatherData() {
-        progressBar.setVisibility(View.VISIBLE);
-        mainContainer.setVisibility(View.GONE);
-        IRetrofitRequests retrofitRequests = RetrofitClientInstance.getRetrofitInstance()
-                .create(IRetrofitRequests.class);
-        retrofitRequests.getCurrentWeather(currentCity.nameCity, "metric", "ru",
-                Constants.API_KEY)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<CurrentWeatherModel>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onSuccess(CurrentWeatherModel currentWeatherModel) {
-                        try {
-                            currentWeather = currentWeatherModel;
-                            progressBar.setVisibility(View.GONE);
-                            mainContainer.setVisibility(View.VISIBLE);
-                            initView();
-                        } catch (Exception e) {
-                            Log.e("TAG", "fragment onDetach()");
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("REQUEST", e.toString());
-                        showDialogError();
-                    }
-                });
-    }
-
-    private void getWeatherFromCoordinate() {
-        IRetrofitRequests retrofitRequests = RetrofitClientInstance.getRetrofitInstance()
-                .create(IRetrofitRequests.class);
-        LatLng coordCity = getCoordinateCity(currentCity.nameCity);
-        retrofitRequests.getCurrentWeatherAndWeek(String.valueOf(coordCity.latitude),
-                String.valueOf(coordCity.longitude), "metric", "ru",
-                Constants.API_KEY)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<NewMain>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(NewMain newMain) {
-                        Log.e("TAG", newMain.toString());
-                        System.out.println();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-
-    private LatLng getCoordinateCity(String nameCity) {
-        LatLng ll = null;
-        if (Geocoder.isPresent()) {
-            try {
-                Geocoder gc = new Geocoder(getContext());
-                List<Address> addresses = gc.getFromLocationName(nameCity, 1);
-                for (Address a : addresses) {
-                    if (a.hasLatitude() && a.hasLongitude()) {
-                        ll = new LatLng(a.getLatitude(), a.getLongitude());
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+    private void getWeather() {
+        App.getInstance().getRepository().getWeatherData(new Repository.IAnswerRequest() {
+            @Override
+            public void onSuccess(CurrentWeatherModel currentWeatherModel) {
+                currentWeather = currentWeatherModel;
+                addInDB();
+                initView();
             }
-        }
-        return ll;
+
+            @Override
+            public void onError(Throwable e) {
+                showDialogError();
+            }
+        }, progressBar, mainContainer, currentCity.nameCity);
     }
 
-    private void showDialogError() {
-        FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-        DialogErrorWithCity dialogErrorWithCity = DialogErrorWithCity.newInstance();
-        dialogErrorWithCity.setCancelable(false);
-        dialogErrorWithCity.show(ft, "showDialogError");
+    private void addInDB() {
+        EntityWeatherDesc entityWeatherDesc = new EntityWeatherDesc();
+        entityWeatherDesc.txtTemperature = Double.valueOf(currentWeather.getMain().getTemp().toString()).intValue()
+                + " " + requireActivity().getResources().getString(R.string.temperature_values);
+        entityWeatherDesc.txtNameCity = currentCity.nameCity;
+        String descriptionWeather = currentWeather.getWeather().get(0).getDescription();
+        entityWeatherDesc.txtDescription = descriptionWeather.substring(0, 1).toUpperCase() +
+                descriptionWeather.substring(1).toLowerCase();
+        entityWeatherDesc.txtDate = (Tools.getDayWeek(getResources()) +
+                ", " + UntilTimes.getAllDate());
+        entityWeatherDesc.txtImg = currentWeather.getWeather().get(0).getIcon();
+        App.getInstance().getCityDao().insertWeatherDesc(entityWeatherDesc);
     }
 
     private void onClickPrevView() {
@@ -349,4 +293,12 @@ public class CoatOfArmsFragment extends Fragment {
         super.onDetach();
         unbinder.unbind();
     }
+
+    private void showDialogError() {
+        FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+        DialogErrorWithCity dialogErrorWithCity = DialogErrorWithCity.newInstance();
+        dialogErrorWithCity.setCancelable(false);
+        dialogErrorWithCity.show(ft, "showDialogError");
+    }
+
 }

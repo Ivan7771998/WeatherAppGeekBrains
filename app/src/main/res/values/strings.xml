@@ -64,4 +64,5 @@
     <string name="text_about_app">The application is slowly being finalized and will soon be more or less real :)
         \nVersion 1.0</string>
     <string name="title_list_cities">Список городов</string>
+    <string name="title_history">History</string>
 </resources>

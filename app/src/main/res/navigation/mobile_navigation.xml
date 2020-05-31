@@ -24,6 +24,16 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_history_weather"
+        android:name="com.example.weatherappgeekbrains.ui.fragments.HistoryWeatherFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/fragment_history_weather">
+        <action
+            android:id="@+id/action_nav_history_weather_to_nav_selected_city_weather"
+            app:destination="@id/nav_selected_city_weather" />
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_settings"
         android:name="com.example.weatherappgeekbrains.ui.fragments.SettingsFragment"
         android:label="@string/title_settings"

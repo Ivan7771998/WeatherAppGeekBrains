@@ -5,17 +5,22 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.example.weatherappgeekbrains.R;
+import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 public class Tools {
@@ -55,5 +60,23 @@ public class Tools {
                 return resources.getString(R.string.sunday);
         }
         return null;
+    }
+
+    public static LatLng getCoordinateCity(String nameCity, Context context) {
+        LatLng ll = null;
+        if (Geocoder.isPresent()) {
+            try {
+                Geocoder gc = new Geocoder(context);
+                List<Address> addresses = gc.getFromLocationName(nameCity, 1);
+                for (Address a : addresses) {
+                    if (a.hasLatitude() && a.hasLongitude()) {
+                        ll = new LatLng(a.getLatitude(), a.getLongitude());
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ll;
     }
 }
