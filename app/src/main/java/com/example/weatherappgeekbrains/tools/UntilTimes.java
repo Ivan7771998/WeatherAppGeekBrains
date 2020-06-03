@@ -17,6 +17,12 @@ public class UntilTimes {
         return formatter.format(date);
     }
 
+    public static String getAllDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy, HH:mm");
+        Date date = new Date(System.currentTimeMillis());
+        return formatter.format(date);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
     public static String getTimeFromMil(Long longDate) {

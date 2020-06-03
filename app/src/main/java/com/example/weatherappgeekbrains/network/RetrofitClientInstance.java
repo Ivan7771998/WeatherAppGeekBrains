@@ -7,11 +7,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClientInstance {
+class RetrofitClientInstance {
 
     private static Retrofit retrofit;
 
-    public static Retrofit getRetrofitInstance() {
+    static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()
                     .baseUrl(Constants.BASE_URL)

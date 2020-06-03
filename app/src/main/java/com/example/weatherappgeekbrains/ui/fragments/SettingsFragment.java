@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import com.example.weatherappgeekbrains.R;
+import com.example.weatherappgeekbrains.tools.MySharedPref;
 import com.example.weatherappgeekbrains.ui.activities.MainActivity;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -43,15 +44,14 @@ public class SettingsFragment extends Fragment {
         ButterKnife.bind(this, view);
         MainActivity mainActivity = (MainActivity) getActivity();
         assert mainActivity != null;
-        switchMaterial.setChecked(mainActivity.isDarkTheme());
+        switchMaterial.setChecked(MySharedPref.isDarkTheme());
         switchMaterial.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                mainActivity.setDarkTheme(true);
+                MySharedPref.setDarkTheme(true);
             } else {
-                mainActivity.setDarkTheme(false);
+                MySharedPref.setDarkTheme(false);
             }
             mainActivity.recreate();
         });
-
     }
 }

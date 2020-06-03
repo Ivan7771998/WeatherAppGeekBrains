@@ -40,7 +40,7 @@ public class DataWeather implements IDataRecycler {
     }
 
     @Override
-    public void addCity(String nameCity) {
+    public void addItem(String nameCity) {
 
     }
 

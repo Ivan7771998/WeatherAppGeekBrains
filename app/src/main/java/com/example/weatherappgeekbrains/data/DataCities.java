@@ -32,7 +32,7 @@ public class DataCities implements IDataRecycler {
     }
 
     @Override
-    public void addCity(String name) {
+    public void addItem(String name) {
         EntityCity entityCity = new EntityCity();
         entityCity.nameCity = name;
         cityDao.insertCity(entityCity);
@@ -50,7 +50,7 @@ public class DataCities implements IDataRecycler {
         return null;
     }
 
-    public List<EntityCity> getAllCities() {
+    private List<EntityCity> getAllCities() {
         return cityDao.getAllCities();
     }
 }

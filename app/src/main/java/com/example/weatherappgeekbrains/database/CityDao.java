@@ -8,11 +8,31 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
+import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
 
 import java.util.List;
 
 @Dao
 public interface CityDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertWeatherDesc(EntityWeatherDesc entityWeatherDesc);
+
+    @Update
+    void updateWeatherDesc(EntityWeatherDesc entityWeatherDesc);
+
+    @Delete
+    void deleteWeatherDesc(EntityWeatherDesc entityWeatherDesc);
+
+    @Query("DELETE FROM entityWeatherDesc WHERE id = :id")
+    void deteleWeatherDescById(long id);
+
+    @Query("SELECT * FROM entityWeatherDesc")
+    List<EntityWeatherDesc> getAllHistoryWeather();
+
+    @Query("SELECT * FROM EntityWeatherDesc WHERE id = :id")
+    EntityWeatherDesc getWeatherDescById(long id);
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCity(EntityCity city);
@@ -31,4 +51,7 @@ public interface CityDao {
 
     @Query("SELECT * FROM EntityCity WHERE id = :id")
     EntityCity getCityById(long id);
+
+    @Query("SELECT * FROM EntityCity WHERE  name_city = :city")
+    EntityCity getCityByName(String city);
 }
