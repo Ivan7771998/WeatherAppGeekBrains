@@ -5,9 +5,11 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
+import com.example.weatherappgeekbrains.database.entities.EntityCityAndWeatherDesc;
 import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
 
 import java.util.List;
@@ -54,4 +56,8 @@ public interface CityDao {
 
     @Query("SELECT * FROM EntityCity WHERE  name_city = :city")
     EntityCity getCityByName(String city);
+
+    @Query("SELECT * from EntityCity")
+    @Transaction
+    List<EntityCityAndWeatherDesc> loadEntityCityAndWeatherDesc();
 }

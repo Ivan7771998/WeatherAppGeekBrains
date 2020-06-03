@@ -9,6 +9,8 @@ import com.example.weatherappgeekbrains.database.CityDao;
 import com.example.weatherappgeekbrains.database.WeatherDatabase;
 import com.example.weatherappgeekbrains.network.Repository;
 import com.example.weatherappgeekbrains.tools.Tools;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 
 public class App extends Application {
     private static App instance;
@@ -31,6 +33,7 @@ public class App extends Application {
                 WeatherDatabase.class,
                 "weather_database")
                 .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build();
     }
 
@@ -38,7 +41,7 @@ public class App extends Application {
         return db.getCityDao();
     }
 
-    public SharedPreferences getSharedPreferences(){
+    public SharedPreferences getSharedPreferences() {
         return Tools.newInstance(getApplicationContext());
     }
 

@@ -22,6 +22,7 @@ import com.example.weatherappgeekbrains.App;
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.adaters.AdapterHistoryWeatherCity;
 import com.example.weatherappgeekbrains.data.DataHistoryBuilder;
+import com.example.weatherappgeekbrains.database.entities.EntityCityAndWeatherDesc;
 import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 
@@ -77,14 +78,14 @@ public class HistoryWeatherFragment extends Fragment {
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setAdapter(adapterHistoryWeatherCity);
         adapterHistoryWeatherCity.setOnItemClickListener((view, position) -> {
-            EntityWeatherDesc entityWeatherDesc = iDataRecycler.getData(position);
-            showCoatOfArms(entityWeatherDesc.txtNameCity);
+            EntityCityAndWeatherDesc entityCityAndWeatherDesc = iDataRecycler.getData(position);
+            showCoatOfArms(entityCityAndWeatherDesc.entityCity.id);
         });
     }
 
-    private void showCoatOfArms(String nameCity) {
+    private void showCoatOfArms(long idCity) {
         Bundle args = new Bundle();
-        args.putString(CITY_DATA_HISTORY, nameCity);
+        args.putLong(CITY_DATA_FR, idCity);
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigate(R.id.action_nav_history_weather_to_nav_selected_city_weather, args);
     }

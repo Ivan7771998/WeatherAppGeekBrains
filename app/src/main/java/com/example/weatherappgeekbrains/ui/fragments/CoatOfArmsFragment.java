@@ -189,7 +189,7 @@ public class CoatOfArmsFragment extends Fragment {
         EntityWeatherDesc entityWeatherDesc = new EntityWeatherDesc();
         entityWeatherDesc.txtTemperature = Double.valueOf(currentWeather.getMain().getTemp().toString()).intValue()
                 + " " + requireActivity().getResources().getString(R.string.temperature_values);
-        entityWeatherDesc.txtNameCity = currentCity.nameCity;
+        entityWeatherDesc.entityCityId = currentCity.id;
         String descriptionWeather = currentWeather.getWeather().get(0).getDescription();
         entityWeatherDesc.txtDescription = descriptionWeather.substring(0, 1).toUpperCase() +
                 descriptionWeather.substring(1).toLowerCase();

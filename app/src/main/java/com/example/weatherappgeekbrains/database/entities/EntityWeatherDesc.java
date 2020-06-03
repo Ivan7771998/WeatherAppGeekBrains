@@ -5,14 +5,14 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(indices = {@Index(value = {"name_city"})})
+@Entity
 public class EntityWeatherDesc {
 
     @PrimaryKey(autoGenerate = true)
     public long id;
 
-    @ColumnInfo(name = "name_city")
-    public String txtNameCity;
+    @ColumnInfo(name = "entityCityId")
+    public long entityCityId;
 
     @ColumnInfo(name = "temperature")
     public String txtTemperature;

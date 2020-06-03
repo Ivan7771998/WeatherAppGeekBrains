@@ -27,10 +27,13 @@ import com.example.weatherappgeekbrains.adaters.AdapterListNameCity;
 import com.example.weatherappgeekbrains.data.DataCitiesBuilder;
 import com.example.weatherappgeekbrains.database.CityDao;
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
+import com.example.weatherappgeekbrains.database.entities.EntityCityAndWeatherDesc;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.tools.MySharedPref;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogAddNewCity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,7 +67,11 @@ public class CitiesFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (!MySharedPref.getCurrentCity().equals("")) {
-            showCoatOfArms(App.getInstance().getCityDao().getCityByName(MySharedPref.getCurrentCity()).id);
+            try {
+                showCoatOfArms(App.getInstance().getCityDao().getCityByName(MySharedPref.getCurrentCity()).id);
+            } catch (Exception e) {
+                MySharedPref.setCurrentCity("");
+            }
         }
     }
 

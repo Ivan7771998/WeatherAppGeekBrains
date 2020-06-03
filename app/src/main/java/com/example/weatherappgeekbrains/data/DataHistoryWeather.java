@@ -3,6 +3,7 @@ package com.example.weatherappgeekbrains.data;
 import android.content.res.Resources;
 
 import com.example.weatherappgeekbrains.database.CityDao;
+import com.example.weatherappgeekbrains.database.entities.EntityCityAndWeatherDesc;
 import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataHistoryWeather implements IDataRecycler {
-    private List<EntityWeatherDesc> entityWeatherDescList;
+    private List<EntityCityAndWeatherDesc> entityWeatherDescList;
     private CityDao cityDao;
 
     DataHistoryWeather(CityDao cityDao) {
@@ -35,8 +36,9 @@ public class DataHistoryWeather implements IDataRecycler {
 
     @Override
     public void removeCity(int position) {
-        cityDao.deteleWeatherDescById(entityWeatherDescList.get(position).id);
-        entityWeatherDescList = getAllHistoryWeather();
+//        cityDao.deteleWeatherDescById(entityWeatherDescList.get(position)
+//                .entityWeatherDescList.get(entityWeatherDescList.size() - 1).id);
+//        entityWeatherDescList = getAllHistoryWeather();
     }
 
     @Override
@@ -44,7 +46,7 @@ public class DataHistoryWeather implements IDataRecycler {
         return null;
     }
 
-    private List<EntityWeatherDesc> getAllHistoryWeather() {
-        return cityDao.getAllHistoryWeather();
+    private List<EntityCityAndWeatherDesc> getAllHistoryWeather() {
+        return cityDao.loadEntityCityAndWeatherDesc();
     }
 }

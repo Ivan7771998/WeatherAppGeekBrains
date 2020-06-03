@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.weatherappgeekbrains.R;
+import com.example.weatherappgeekbrains.database.entities.EntityCityAndWeatherDesc;
 import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.tools.Constants;
@@ -45,8 +46,8 @@ public class AdapterHistoryWeatherCity extends RecyclerView.Adapter<AdapterHisto
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        EntityWeatherDesc entityWeatherDesc = dataHistory.getData(position);
-        mapValues(holder, entityWeatherDesc);
+        EntityCityAndWeatherDesc entityCityAndWeatherDesc = dataHistory.getData(position);
+        mapValues(holder, entityCityAndWeatherDesc);
         holder.itemView.setOnLongClickListener(v -> {
             menuPosition = position;
             return false;
@@ -110,15 +111,18 @@ public class AdapterHistoryWeatherCity extends RecyclerView.Adapter<AdapterHisto
         }
     }
 
-    private void mapValues(ViewHolder holder, EntityWeatherDesc entityWeatherDesc) {
-        holder.txtDateSearch.setText(entityWeatherDesc.txtDate);
-        holder.txtDescWeather.setText(entityWeatherDesc.txtDescription);
-        holder.txtHistTemperature.setText(entityWeatherDesc.txtTemperature);
-        holder.txtNameCity.setText(entityWeatherDesc.txtNameCity);
-        Glide.with(fragment)
-                .load(Constants.GET_IMG + entityWeatherDesc.txtImg + ".png")
-                .centerCrop()
-                .into(holder.imgStatus);
+    private void mapValues(ViewHolder holder, EntityCityAndWeatherDesc entityCityAndWeatherDesc) {
+        int last = entityCityAndWeatherDesc.entityWeatherDescList.size() - 1;
+        if (last != -1) {
+            holder.txtDateSearch.setText(entityCityAndWeatherDesc.entityWeatherDescList.get(last).txtDate);
+            holder.txtDescWeather.setText(entityCityAndWeatherDesc.entityWeatherDescList.get(last).txtDescription);
+            holder.txtHistTemperature.setText(entityCityAndWeatherDesc.entityWeatherDescList.get(last).txtTemperature);
+            holder.txtNameCity.setText(entityCityAndWeatherDesc.entityCity.nameCity);
+            Glide.with(fragment)
+                    .load(Constants.GET_IMG + entityCityAndWeatherDesc.entityWeatherDescList.get(last).txtImg + ".png")
+                    .centerCrop()
+                    .into(holder.imgStatus);
+        }
     }
 
     public int getMenuPosition() {
