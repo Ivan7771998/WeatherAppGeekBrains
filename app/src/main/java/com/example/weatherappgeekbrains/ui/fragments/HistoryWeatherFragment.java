@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.weatherappgeekbrains.App;
 import com.example.weatherappgeekbrains.R;
@@ -25,6 +26,7 @@ import com.example.weatherappgeekbrains.data.DataHistoryBuilder;
 import com.example.weatherappgeekbrains.database.entities.EntityCityAndWeatherDesc;
 import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
+import com.example.weatherappgeekbrains.tools.MySharedPref;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,8 +80,13 @@ public class HistoryWeatherFragment extends Fragment {
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setAdapter(adapterHistoryWeatherCity);
         adapterHistoryWeatherCity.setOnItemClickListener((view, position) -> {
-            EntityCityAndWeatherDesc entityCityAndWeatherDesc = iDataRecycler.getData(position);
-            showCoatOfArms(entityCityAndWeatherDesc.entityCity.id);
+            if (MySharedPref.getNetWorkConnect()) {
+                EntityCityAndWeatherDesc entityCityAndWeatherDesc = iDataRecycler.getData(position);
+                showCoatOfArms(entityCityAndWeatherDesc.entityCity.id);
+            } else {
+                if (getActivity() != null)
+                    Toast.makeText(getContext(), getActivity().getString(R.string.not_internet_connection), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Priority;
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.interfaces.IFragmentDialog;
+import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogAboutApp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,7 +41,6 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity implements IFragmentDialog {
 
     //Notification
-    private static final String CHANNEL_ID = "main_channel";
     private static int notifyID = 0;
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this, CHANNEL_ID)
+                new NotificationCompat.Builder(this, Constants.CHANNEL_ID)
                         .setSmallIcon(android.R.drawable.ic_dialog_email)
                         .setContentTitle("Привет")
                         .setContentText("Это локальное пуш уведомление!")
@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, getString(R.string.my_channel), importance);
+            NotificationChannel channel = new NotificationChannel(Constants.CHANNEL_ID, getString(R.string.my_channel), importance);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             if (notificationManager != null)
                 notificationManager.createNotificationChannel(channel);
@@ -154,17 +154,14 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
 
     private void getCurrentToken(){
         FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("TAG", "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-                        Log.d("TAG", token);
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("TAG", "getInstanceId failed", task.getException());
+                        return;
                     }
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+                    Log.d("TAG", token);
                 });
     }
 

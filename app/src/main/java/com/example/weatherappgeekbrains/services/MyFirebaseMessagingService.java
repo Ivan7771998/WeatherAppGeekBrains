@@ -8,13 +8,13 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.ui.activities.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String CHANNEL_ID = "firebase_channel";
     private static int notifyID = 0;
     private static final String TAG = "log";
 
@@ -40,7 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this, CHANNEL_ID)
+                new NotificationCompat.Builder(this, Constants.CHANNEL_ID)
                         .setSmallIcon(android.R.drawable.ic_dialog_email)
                         .setContentTitle(title)
                         .setContentText(text)

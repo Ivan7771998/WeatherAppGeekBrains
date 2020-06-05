@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.weatherappgeekbrains.App;
 import com.example.weatherappgeekbrains.R;
@@ -66,7 +67,7 @@ public class CitiesFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (!MySharedPref.getCurrentCity().equals("")) {
+        if (!MySharedPref.getCurrentCity().equals("") && MySharedPref.getNetWorkConnect()) {
             try {
                 showCoatOfArms(App.getInstance().getCityDao().getCityByName(MySharedPref.getCurrentCity()).id);
             } catch (Exception e) {
@@ -90,17 +91,7 @@ public class CitiesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             currentCityModel = savedInstanceState.getParcelable("city");
-        } else {
-//            CityModel cityModel = iDataRecycler.getData(0);
-//            currentCityModel = new CityModel(cityModel.getNameCity(), cityModel.getImageId(),
-//                    cityModel.getUrlCity());
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        // outState.putParcelable("city", currentCityModel);
-        super.onSaveInstanceState(outState);
     }
 
     private void initCityDao() {
@@ -128,8 +119,13 @@ public class CitiesFragment extends Fragment {
         recyclerView.setAdapter(adapterListNameCity);
 
         adapterListNameCity.setOnItemClickListener((view, position) -> {
-            currentCityModel = iDataRecycler.getData(position);
-            showCoatOfArms(currentCityModel.id);
+            if (MySharedPref.getNetWorkConnect()) {
+                currentCityModel = iDataRecycler.getData(position);
+                showCoatOfArms(currentCityModel.id);
+            } else {
+                if (getActivity() != null)
+                    Toast.makeText(getContext(), getActivity().getString(R.string.not_internet_connection), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

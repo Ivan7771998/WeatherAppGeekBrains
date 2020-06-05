@@ -46,6 +46,7 @@ public class CoatOfArmsFragment extends Fragment {
 
     static final String CITY_DATA_FR = "city_fragment";
     static final String CITY_DATA_HISTORY = "city_history_fragment";
+    static final String TAG = "CoatOfArmsFragment";
     private long idCity;
     private EntityCity currentCity;
     private CurrentWeatherModel currentWeather;
@@ -295,10 +296,14 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     private void showDialogError() {
-        FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-        DialogErrorWithCity dialogErrorWithCity = DialogErrorWithCity.newInstance();
-        dialogErrorWithCity.setCancelable(false);
-        dialogErrorWithCity.show(ft, "showDialogError");
+        try {
+            FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
+            DialogErrorWithCity dialogErrorWithCity = DialogErrorWithCity.newInstance();
+            dialogErrorWithCity.setCancelable(false);
+            dialogErrorWithCity.show(ft, "showDialogError");
+        }catch (Exception e){
+            Log.e(TAG, "view onDetach()");
+        }
     }
 
 }

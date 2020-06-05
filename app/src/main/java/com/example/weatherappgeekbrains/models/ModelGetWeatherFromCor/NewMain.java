@@ -1,4 +1,4 @@
-package com.example.weatherappgeekbrains.models.newModel;
+package com.example.weatherappgeekbrains.models.ModelGetWeatherFromCor;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
