@@ -1,6 +1,5 @@
 package com.example.weatherappgeekbrains.network;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -9,7 +8,7 @@ import android.widget.ProgressBar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
-import com.example.weatherappgeekbrains.models.newModel.NewMain;
+import com.example.weatherappgeekbrains.models.ModelGetWeatherFromCor.NewMain;
 import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.tools.Tools;
 import com.google.android.gms.maps.model.LatLng;

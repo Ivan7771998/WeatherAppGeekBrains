@@ -48,8 +48,6 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="sub_title_menu_main">Main</string>
     <string name="sub_title_menu_other">Other</string>
     <string name="title_weather_in">Weather in city</string>
@@ -65,4 +63,10 @@
         \nVersion 1.0</string>
     <string name="title_list_cities">Список городов</string>
     <string name="title_history">History</string>
+    <string name="send_push_notify">Отправить пуш уведомление</string>
+    <string name="not_internet_connection">Not internet connection!</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="my_channel">my_channel</string>
+    <string name="my_channel_firebase">my_channel_firebase</string>
 </resources>

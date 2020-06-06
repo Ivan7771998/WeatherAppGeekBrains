@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "877493162825",
+    "firebase_url": "https://weatherappgeekbrains.firebaseio.com",
+    "project_id": "weatherappgeekbrains",
+    "storage_bucket": "weatherappgeekbrains.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877493162825:android:242b5a67d277d2eeff0098",
+        "android_client_info": {
+          "package_name": "com.example.weatherappgeekbrains"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877493162825-mn521gq13e7bc1bor4l8m9gptgq3dfml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy_eBOgBQ2zNSprrI_WrNaA8tQwtiaMuo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877493162825-mn521gq13e7bc1bor4l8m9gptgq3dfml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

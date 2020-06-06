@@ -1,7 +1,7 @@
 package com.example.weatherappgeekbrains.network;
 
 import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
-import com.example.weatherappgeekbrains.models.newModel.NewMain;
+import com.example.weatherappgeekbrains.models.ModelGetWeatherFromCor.NewMain;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;

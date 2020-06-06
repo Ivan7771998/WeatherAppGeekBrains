@@ -63,4 +63,11 @@
     <string name="title_about_app">О приложении</string>
     <string name="text_about_app">Приложение потихоньку дорабатывается и в скором времени будет похоже на более менее настоящее :)
         \nВерсия 1.0</string>
+    <string name="title_list_cities">Список городов</string>
+    <string name="send_push_notify">Отправить пуш уведомление</string>
+    <string name="not_internet_connection">Нет интернет соединения!</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="my_channel">my_channel</string>
+    <string name="my_channel_firebase">my_channel_firebase</string>
 </resources>
