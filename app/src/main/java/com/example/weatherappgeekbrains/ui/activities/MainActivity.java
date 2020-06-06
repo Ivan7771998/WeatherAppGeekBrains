@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
         ButterKnife.bind(this);
         initToolBar(toolbar);
         initDrawer();
+        createNotificationChannel();
         getCurrentToken();
     }
 
@@ -120,8 +121,6 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
     }
 
     private void sendPushNotification() {
-        createNotificationChannel();
-
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
