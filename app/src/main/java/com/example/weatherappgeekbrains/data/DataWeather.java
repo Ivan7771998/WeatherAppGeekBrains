@@ -1,5 +1,6 @@
 package com.example.weatherappgeekbrains.data;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import com.example.weatherappgeekbrains.R;
@@ -40,9 +41,7 @@ public class DataWeather implements IDataRecycler {
     }
 
     @Override
-    public void addItem(String nameCity) {
-
-    }
+    public void addItem(String nameCity, Context context) { }
 
     @Override
     public void removeCity(int position) {

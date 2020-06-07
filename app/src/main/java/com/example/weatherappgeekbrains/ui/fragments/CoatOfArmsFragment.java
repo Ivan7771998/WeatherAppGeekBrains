@@ -31,11 +31,13 @@ import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
+import com.example.weatherappgeekbrains.models.ModelGetWeatherFromCor.DataWeatherFromCor;
 import com.example.weatherappgeekbrains.network.Repository;
 import com.example.weatherappgeekbrains.tools.MySharedPref;
 import com.example.weatherappgeekbrains.tools.Tools;
 import com.example.weatherappgeekbrains.tools.UntilTimes;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogErrorWithCity;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
 
 import butterknife.BindView;
@@ -46,10 +48,13 @@ public class CoatOfArmsFragment extends Fragment {
 
     static final String CITY_DATA_FR = "city_fragment";
     static final String CITY_DATA_HISTORY = "city_history_fragment";
+    public static final String CITY_DATA_LAT = "city_data_lat";
+    public static final String CITY_DATA_LNG = "city_data_lng";
+    static final String FIND_WEATHER_MY_LOCATION = "find_weather_my_location";
     static final String TAG = "CoatOfArmsFragment";
     private long idCity;
     private EntityCity currentCity;
-    private CurrentWeatherModel currentWeather;
+    private DataWeatherFromCor weatherFromCor;
 
     @BindView(R.id.btnMoreInfo)
     MaterialButton btnMoreInfo;
@@ -132,21 +137,20 @@ public class CoatOfArmsFragment extends Fragment {
             if (getArguments().containsKey(CITY_DATA_FR)) {
                 idCity = getArguments().getLong(CITY_DATA_FR);
                 currentCity = App.getInstance().getCityDao().getCityById(idCity);
-            } else {
+            } else if (getArguments().containsKey(CITY_DATA_HISTORY)) {
                 currentCity = App.getInstance()
                         .getCityDao().getCityByName(getArguments().getString(CITY_DATA_HISTORY));
+            } else if (getArguments().containsKey(CITY_DATA_LAT)) {
+                currentCity = new EntityCity();
+                LatLng coordinate = new LatLng(getArguments().getDouble(CITY_DATA_LAT),
+                        getArguments().getDouble(CITY_DATA_LNG));
+                currentCity.latitude = coordinate.latitude;
+                currentCity.longitude = coordinate.longitude;
+                currentCity.nameCity = null;
+                currentCity.id = 0;
             }
-            MySharedPref.setCurrentCity(currentCity.nameCity);
+            //MySharedPref.setCurrentCity(currentCity.nameCity);
         }
-
-
-        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
-            @Override
-            public void handleOnBackPressed() {
-                MySharedPref.setCurrentCity("");
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
 
@@ -163,7 +167,6 @@ public class CoatOfArmsFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         try {
             getWeather();
-            initListWeather(initDataWeather());
             onClickPrevView();
         } catch (Exception e) {
             Log.e("TAG", e.getMessage());
@@ -171,33 +174,41 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     private void getWeather() {
-        App.getInstance().getRepository().getWeatherData(new Repository.IAnswerRequest() {
+        progressBar.setVisibility(View.VISIBLE);
+        mainContainer.setVisibility(View.GONE);
+        App.getInstance().getRepository().getWeatherFromCoordinate(new Repository.IAnswerRequestFromCor() {
             @Override
-            public void onSuccess(CurrentWeatherModel currentWeatherModel) {
-                currentWeather = currentWeatherModel;
+            public void onSuccess(DataWeatherFromCor dataWeatherFromCor) {
+                Log.e("TAG", dataWeatherFromCor.toString());
+                progressBar.setVisibility(View.GONE);
+                mainContainer.setVisibility(View.VISIBLE);
+                weatherFromCor = dataWeatherFromCor;
                 addInDB();
                 initView();
+                initListWeather();
             }
 
             @Override
             public void onError(Throwable e) {
                 showDialogError();
             }
-        }, progressBar, mainContainer, currentCity.nameCity);
+        }, currentCity);
     }
 
     private void addInDB() {
-        EntityWeatherDesc entityWeatherDesc = new EntityWeatherDesc();
-        entityWeatherDesc.txtTemperature = Double.valueOf(currentWeather.getMain().getTemp().toString()).intValue()
-                + " " + requireActivity().getResources().getString(R.string.temperature_values);
-        entityWeatherDesc.entityCityId = currentCity.id;
-        String descriptionWeather = currentWeather.getWeather().get(0).getDescription();
-        entityWeatherDesc.txtDescription = descriptionWeather.substring(0, 1).toUpperCase() +
-                descriptionWeather.substring(1).toLowerCase();
-        entityWeatherDesc.txtDate = (Tools.getDayWeek(getResources()) +
-                ", " + UntilTimes.getAllDate());
-        entityWeatherDesc.txtImg = currentWeather.getWeather().get(0).getIcon();
-        App.getInstance().getCityDao().insertWeatherDesc(entityWeatherDesc);
+        if (currentCity.id != 0) {
+            EntityWeatherDesc entityWeatherDesc = new EntityWeatherDesc();
+            entityWeatherDesc.txtTemperature = Double.valueOf(weatherFromCor.getCurrent().temp.toString()).intValue()
+                    + " " + requireActivity().getResources().getString(R.string.temperature_values);
+            entityWeatherDesc.entityCityId = currentCity.id;
+            String descriptionWeather = weatherFromCor.getCurrent().weather.get(0).getDescription();
+            entityWeatherDesc.txtDescription = descriptionWeather.substring(0, 1).toUpperCase() +
+                    descriptionWeather.substring(1).toLowerCase();
+            entityWeatherDesc.txtDate = (Tools.getDayWeek(getResources()) +
+                    ", " + UntilTimes.getAllDate());
+            entityWeatherDesc.txtImg = weatherFromCor.getCurrent().weather.get(0).getIcon();
+            App.getInstance().getCityDao().insertWeatherDesc(entityWeatherDesc);
+        }
     }
 
     private void onClickPrevView() {
@@ -223,65 +234,58 @@ public class CoatOfArmsFragment extends Fragment {
     private void initView() {
         try {
             textTemperature.setText(new StringBuilder(
-                    Double.valueOf(currentWeather.getMain().getTemp().toString()).intValue()
+                    Double.valueOf(weatherFromCor.getCurrent().getTemp().toString()).intValue()
                             + " " +
                             requireActivity().getResources().getString(R.string.temperature_values)));
-            String descriptionWeather = currentWeather.getWeather().get(0).getDescription();
+            String descriptionWeather = weatherFromCor.getCurrent().getWeather().get(0).getDescription();
             textStatusWeather.setText(new StringBuilder(descriptionWeather.substring(0, 1).toUpperCase() +
                     descriptionWeather.substring(1).toLowerCase()));
             textDayTimeNow.setText(new StringBuilder(Tools.getDayWeek(getResources()) +
                     " " + UntilTimes.getCurrentTime()));
-            textFeelLike.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
+            textFeelLike.setText(new StringBuilder(Double.valueOf(weatherFromCor.getCurrent()
                     .getFeelsLike().toString()).intValue()
                     + " " +
                     requireActivity().getResources().getString(R.string.temperature_values)));
-            textMinTemp.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
-                    .getTempMin().toString()).intValue()
-                    + " " +
-                    requireActivity().getResources().getString(R.string.temperature_values)));
-            textMaxTemp.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
-                    .getTempMax().toString()).intValue()
-                    + " " +
-                    requireActivity().getResources().getString(R.string.temperature_values)));
-            textPressure.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
+//            textMinTemp.setText(new StringBuilder(Double.valueOf(weatherFromCor.getCurrent()
+//                    .getTempMin().toString()).intValue()
+//                    + " " +
+//                    requireActivity().getResources().getString(R.string.temperature_values)));
+//            textMaxTemp.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
+//                    .getTempMax().toString()).intValue()
+//                    + " " +
+//                    requireActivity().getResources().getString(R.string.temperature_values)));
+            textPressure.setText(new StringBuilder(Double.valueOf(weatherFromCor.getCurrent()
                     .getPressure().toString()).intValue()
                     + " " +
                     requireActivity().getResources().getString(R.string.pressure_values)));
-            textHumidity.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
+            textHumidity.setText(new StringBuilder(Double.valueOf(weatherFromCor.getCurrent()
                     .getHumidity().toString()).intValue()
                     + " " +
                     requireActivity().getResources().getString(R.string.humidity_values)));
-            textWindSpeed.setText(new StringBuilder(Double.valueOf(currentWeather.getWind()
-                    .getSpeed().toString()).longValue()
+            textWindSpeed.setText(new StringBuilder(Double.valueOf(weatherFromCor.getCurrent().windSpeed
+                    .toString()).longValue()
                     + " " +
                     requireActivity().getResources().getString(R.string.wind_values)));
-            textSunRise.setText(UntilTimes.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunrise())));
-            textSunSet.setText(UntilTimes.getTimeFromMil(Long.valueOf(currentWeather.getSys().getSunset())));
-            textVisibility.setText(new StringBuilder(currentWeather.getVisibility() / 1000 + " "
+            textSunRise.setText(UntilTimes.getTimeFromMil(Long.valueOf(weatherFromCor.getCurrent().getSunrise())));
+            textSunSet.setText(UntilTimes.getTimeFromMil(Long.valueOf(weatherFromCor.getCurrent().getSunset())));
+            textVisibility.setText(new StringBuilder(weatherFromCor.getCurrent().getVisibility() / 1000 + " "
                     + requireActivity().getResources().getString(R.string.visible_values)));
-            titleWeather.setText(currentCity.nameCity);
-            btnMoreInfo.setOnClickListener(v -> {
-//                startActivity(new Intent(android.content.Intent.ACTION_VIEW,
-//                        Uri.parse(cityModel.getUrlCity())));
-            });
+            if (currentCity.nameCity != null) {
+                titleWeather.setText(currentCity.nameCity);
+            } else {
+                Tools.setAddress(new LatLng(currentCity.latitude, currentCity.longitude), getContext(), titleWeather);
+            }
         } catch (Exception e) {
             Log.e("TAG", "fragment onDetach()");
         }
     }
 
-
-    private IDataRecycler initDataWeather() {
-        return new DataWeatherBuilder()
-                .setResources(getResources())
-                .build();
-    }
-
-    private void initListWeather(IDataRecycler iDataRecycler) {
+    private void initListWeather() {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
-                RecyclerView.VERTICAL, false);
+                RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        AdapterListWeatherWeek adapterListWeatherWeek = new AdapterListWeatherWeek(iDataRecycler);
+        AdapterListWeatherWeek adapterListWeatherWeek = new AdapterListWeatherWeek(weatherFromCor, getContext());
         DividerItemDecoration itemDecoration =
                 new DividerItemDecoration(requireContext(),
                         LinearLayoutManager.VERTICAL);
@@ -301,7 +305,7 @@ public class CoatOfArmsFragment extends Fragment {
             DialogErrorWithCity dialogErrorWithCity = DialogErrorWithCity.newInstance();
             dialogErrorWithCity.setCancelable(false);
             dialogErrorWithCity.show(ft, "showDialogError");
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e(TAG, "view onDetach()");
         }
     }

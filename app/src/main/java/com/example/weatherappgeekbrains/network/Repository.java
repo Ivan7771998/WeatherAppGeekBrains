@@ -7,8 +7,9 @@ import android.widget.ProgressBar;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
-import com.example.weatherappgeekbrains.models.ModelGetWeatherFromCor.NewMain;
+import com.example.weatherappgeekbrains.models.ModelGetWeatherFromCor.DataWeatherFromCor;
 import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.tools.Tools;
 import com.google.android.gms.maps.model.LatLng;
@@ -54,32 +55,37 @@ public class Repository {
                 });
     }
 
-    private void getWeatherFromCoordinate(String nameCity, Context context) {
+    public void getWeatherFromCoordinate(IAnswerRequestFromCor answerRequestFromCor,
+                                         EntityCity currentCity) {
         IRetrofitRequests retrofitRequests = RetrofitClientInstance.getRetrofitInstance()
                 .create(IRetrofitRequests.class);
-        LatLng coordCity = Tools.getCoordinateCity(nameCity, context);
-        retrofitRequests.getCurrentWeatherAndWeek(String.valueOf(coordCity.latitude),
-                String.valueOf(coordCity.longitude), "metric", "ru",
+        retrofitRequests.getCurrentWeatherAndWeek(String.valueOf(currentCity.latitude),
+                String.valueOf(currentCity.longitude), "minutely", "metric", "ru",
                 Constants.API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<NewMain>() {
+                .subscribe(new SingleObserver<DataWeatherFromCor>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onSuccess(NewMain newMain) {
-                        Log.e("TAG", newMain.toString());
-                        System.out.println();
+                    public void onSuccess(DataWeatherFromCor dataWeatherFromCor) {
+                        answerRequestFromCor.onSuccess(dataWeatherFromCor);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        answerRequestFromCor.onError(e);
                     }
                 });
+    }
+
+    public interface IAnswerRequestFromCor {
+        void onSuccess(DataWeatherFromCor dataWeatherFromCor);
+
+        void onError(Throwable e);
     }
 
     public interface IAnswerRequest {

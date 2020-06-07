@@ -1,5 +1,6 @@
 package com.example.weatherappgeekbrains.data;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import com.example.weatherappgeekbrains.database.CityDao;
@@ -31,7 +32,7 @@ public class DataHistoryWeather implements IDataRecycler {
     }
 
     @Override
-    public void addItem(String name) {
+    public void addItem(String name, Context context) {
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.example.weatherappgeekbrains.adaters;
 
-import android.content.res.Resources;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,61 +10,79 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.weatherappgeekbrains.R;
-import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
-import com.example.weatherappgeekbrains.models.WeatherDayWeekModel;
+import com.example.weatherappgeekbrains.models.ModelGetWeatherFromCor.DataWeatherFromCor;
+import com.example.weatherappgeekbrains.tools.Constants;
+import com.example.weatherappgeekbrains.tools.UntilTimes;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AdapterListWeatherWeek extends RecyclerView.Adapter<AdapterListWeatherWeek.ViewHolder> {
 
-    private IDataRecycler dataWeather;
-    private Resources resources;
+    private DataWeatherFromCor dataWeather;
+    private Context context;
 
-    public AdapterListWeatherWeek(IDataRecycler dataWeather) {
+    public AdapterListWeatherWeek(DataWeatherFromCor dataWeather, Context context) {
         this.dataWeather = dataWeather;
-        this.resources = dataWeather.getResources();
+        this.context = context;
     }
 
     @NonNull
     @Override
     public AdapterListWeatherWeek.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_list_week_weather, parent, false);
+                .inflate(R.layout.item_list_hour_weather, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AdapterListWeatherWeek.ViewHolder holder, int position) {
-        WeatherDayWeekModel weatherDayWeekModel = dataWeather.getData(position);
-        holder.dayWeek.setText(weatherDayWeekModel.getDayWeek());
-        holder.imageWeather.setImageDrawable(resources.getDrawable(weatherDayWeekModel.getIdImage()));
-        holder.statusWeather.setText(weatherDayWeekModel.getStatusWeather());
-        holder.itemWeekTemperature.setText(weatherDayWeekModel.getTemperature());
+        initViewForDaily(holder);
     }
 
     @Override
     public int getItemCount() {
-        return dataWeather.size();
+        return dataWeather.getDaily().size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.imageWeather)
-        ImageView imageWeather;
 
-        @BindView(R.id.dayWeek)
-        TextView dayWeek;
+        @BindView(R.id.txtTemperature)
+        TextView txtTemperature;
 
-        @BindView(R.id.statusWeather)
-        TextView statusWeather;
+        @BindView(R.id.imgWeather)
+        ImageView imgWeather;
 
-        @BindView(R.id.itemWeekTemperature)
-        TextView itemWeekTemperature;
+        @BindView(R.id.textHumidity)
+        TextView textHumidity;
+
+        @BindView(R.id.textDate)
+        TextView textDate;
 
         ViewHolder(@NonNull View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    private void initViewForDaily(ViewHolder holder) {
+        Glide.with(context)
+                .load(Constants.GET_IMG + dataWeather.getDaily().get(holder.getAdapterPosition()).getWeather().get(0).getIcon() + ".png")
+                .centerCrop()
+                .into(holder.imgWeather);
+
+        holder.txtTemperature.setText(new StringBuilder(
+                Double.valueOf(dataWeather.getDaily().get(holder.getAdapterPosition()).getTemp().getDay().toString()).intValue()
+                        + " " +
+                        context.getResources().getString(R.string.temperature_values)));
+
+        holder.textHumidity.setText(new StringBuilder(Double.valueOf(dataWeather.getDaily().get(holder.getAdapterPosition())
+                .getHumidity().toString()).intValue()
+                + " " +
+                context.getResources().getString(R.string.humidity_values)));
+
+        holder.textDate.setText(UntilTimes.getTimeForDaily(dataWeather.getDaily().get(holder.getAdapterPosition()).getDt().longValue()));
     }
 }

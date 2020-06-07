@@ -1,10 +1,13 @@
 package com.example.weatherappgeekbrains.data;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import com.example.weatherappgeekbrains.database.CityDao;
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
+import com.example.weatherappgeekbrains.tools.Tools;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +35,17 @@ public class DataCities implements IDataRecycler {
     }
 
     @Override
-    public void addItem(String name) {
+    public void addItem(String name, Context context) {
         EntityCity entityCity = new EntityCity();
         entityCity.nameCity = name;
+        try {
+            LatLng coordCity = Tools.getCoordinateCity(name, context);
+            entityCity.latitude = coordCity.latitude;
+            entityCity.longitude = coordCity.longitude;
+        } catch (Exception e) {
+            entityCity.latitude = null;
+            entityCity.longitude = null;
+        }
         cityDao.insertCity(entityCity);
         cityModelList = getAllCities();
     }

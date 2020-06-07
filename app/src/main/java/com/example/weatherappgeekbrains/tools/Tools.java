@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
@@ -78,5 +79,27 @@ public class Tools {
             }
         }
         return ll;
+    }
+
+    public static void setAddress(final LatLng location, Context context, TextView nameCity) {
+        final Geocoder geocoder = new Geocoder(context);
+        // Поскольку Geocoder работает по интернету, создаём отдельный поток
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final List<Address> addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
+                    nameCity.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            nameCity.setText(addresses.get(0).getAddressLine(0));
+                        }
+                    });
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

@@ -1,9 +1,7 @@
 package com.example.weatherappgeekbrains.ui.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,31 +10,39 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.bumptech.glide.Priority;
+import com.example.weatherappgeekbrains.App;
 import com.example.weatherappgeekbrains.R;
+import com.example.weatherappgeekbrains.database.entities.EntityMyLocation;
 import com.example.weatherappgeekbrains.interfaces.IFragmentDialog;
 import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogAboutApp;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.weatherappgeekbrains.ui.fragments.CoatOfArmsFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.weatherappgeekbrains.ui.fragments.CoatOfArmsFragment.CITY_DATA_LAT;
+import static com.example.weatherappgeekbrains.ui.fragments.CoatOfArmsFragment.CITY_DATA_LNG;
 
 public class MainActivity extends BaseActivity implements IFragmentDialog {
 
@@ -67,28 +73,41 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
 
     private void initDrawer() {
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_weather, R.id.nav_about_dev, R.id.nav_settings, R.id.nav_send_push_notify)
+                R.id.nav_weather,
+                R.id.nav_about_dev,
+                R.id.nav_settings,
+                R.id.nav_send_push_notify,
+                R.id.nav_find_out_the_weather)
                 .setDrawerLayout(drawer)
                 .build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                int id = item.getItemId();
-                if (id == R.id.nav_send_push_notify) {
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_send_push_notify:
                     sendPushNotification();
-                }
-                NavigationUI.onNavDestinationSelected(item, navController);
-                drawer.closeDrawer(GravityCompat.START);
-
-                return true;
+                    break;
+                case R.id.nav_find_out_the_weather:
+                    //requestLocation();
+                    EntityMyLocation entityMyLocation = App.getInstance().getCityDao().getCurrentLocation();
+                    LatLng coordinate = new LatLng(entityMyLocation.latitude, entityMyLocation.longitude);
+                    showCoatOfArms(coordinate);
+                    break;
             }
+            NavigationUI.onNavDestinationSelected(item, navController);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
         });
+    }
+
+    private void showCoatOfArms(LatLng coordinate) {
+        Bundle args = new Bundle();
+        args.putDouble(CITY_DATA_LAT, coordinate.latitude);
+        args.putDouble(CITY_DATA_LNG, coordinate.longitude);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController.navigate(R.id.action_nav_weather_to_nav_selected_city_weather, args);
     }
 
     public boolean onSupportNavigateUp() {
@@ -151,7 +170,7 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
         }
     }
 
-    private void getCurrentToken(){
+    private void getCurrentToken() {
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
@@ -163,5 +182,4 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
                     Log.d("TAG", token);
                 });
     }
-
 }
