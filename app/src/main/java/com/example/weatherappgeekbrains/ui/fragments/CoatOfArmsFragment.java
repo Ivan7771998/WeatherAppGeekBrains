@@ -1,9 +1,9 @@
 package com.example.weatherappgeekbrains.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -25,15 +25,12 @@ import android.widget.TextView;
 
 import com.example.weatherappgeekbrains.App;
 import com.example.weatherappgeekbrains.R;
-import com.example.weatherappgeekbrains.adaters.AdapterListWeatherWeek;
-import com.example.weatherappgeekbrains.data.DataWeatherBuilder;
+import com.example.weatherappgeekbrains.adaters.AdapterListWeatherDays;
+import com.example.weatherappgeekbrains.adaters.AdapterListWeatherHours;
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
-import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
-import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
 import com.example.weatherappgeekbrains.models.ModelGetWeatherFromCor.DataWeatherFromCor;
 import com.example.weatherappgeekbrains.network.Repository;
-import com.example.weatherappgeekbrains.tools.MySharedPref;
 import com.example.weatherappgeekbrains.tools.Tools;
 import com.example.weatherappgeekbrains.tools.UntilTimes;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogErrorWithCity;
@@ -65,8 +62,11 @@ public class CoatOfArmsFragment extends Fragment {
     @BindView(R.id.titleWeather)
     TextView titleWeather;
 
-    @BindView(R.id.list_week)
-    RecyclerView recyclerView;
+    @BindView(R.id.list_weather_in_days)
+    RecyclerView recyclerViewWeatherInDays;
+
+    @BindView(R.id.list_weather_in_hours)
+    RecyclerView recyclerViewWeatherInHours;
 
     @BindView(R.id.textFeelLike)
     TextView textFeelLike;
@@ -124,6 +124,12 @@ public class CoatOfArmsFragment extends Fragment {
 
     @BindView(R.id.imgPrevView)
     ImageView imgPrevView;
+
+    @BindView(R.id.txtSelectDays)
+    TextView txtSelectDays;
+
+    @BindView(R.id.txtSelectHours)
+    TextView txtSelectHours;
 
     private Unbinder unbinder;
 
@@ -213,6 +219,8 @@ public class CoatOfArmsFragment extends Fragment {
 
     private void onClickPrevView() {
         prevLayout.setOnClickListener(v -> workWithPrevView());
+        txtSelectHours.setOnClickListener(v -> selectDaysOrHoursWeather(txtSelectHours));
+        txtSelectDays.setOnClickListener(v -> selectDaysOrHoursWeather(txtSelectDays));
     }
 
     private void workWithPrevView() {
@@ -281,16 +289,33 @@ public class CoatOfArmsFragment extends Fragment {
     }
 
     private void initListWeather() {
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
+        recyclerViewWeatherInDays.setHasFixedSize(true);
+        recyclerViewWeatherInHours.setHasFixedSize(true);
+        LinearLayoutManager layoutManagerForDays = new LinearLayoutManager(getContext(),
                 RecyclerView.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        AdapterListWeatherWeek adapterListWeatherWeek = new AdapterListWeatherWeek(weatherFromCor, getContext());
-        DividerItemDecoration itemDecoration =
-                new DividerItemDecoration(requireContext(),
-                        LinearLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(itemDecoration);
-        recyclerView.setAdapter(adapterListWeatherWeek);
+        LinearLayoutManager layoutManagerForHours = new LinearLayoutManager(getContext(),
+                RecyclerView.HORIZONTAL, false);
+        recyclerViewWeatherInDays.setLayoutManager(layoutManagerForDays);
+        recyclerViewWeatherInHours.setLayoutManager(layoutManagerForHours);
+        AdapterListWeatherDays adapterListWeatherDays = new AdapterListWeatherDays(weatherFromCor, getContext());
+        AdapterListWeatherHours adapterListWeatherHours = new AdapterListWeatherHours(weatherFromCor, getContext());
+        recyclerViewWeatherInDays.setAdapter(adapterListWeatherDays);
+        recyclerViewWeatherInHours.setAdapter(adapterListWeatherHours);
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void selectDaysOrHoursWeather(TextView selectedView) {
+        txtSelectDays.setBackgroundColor(android.R.color.white);
+        txtSelectHours.setBackgroundColor(android.R.color.white);
+        if (getActivity() != null)
+            selectedView.setBackground(getActivity().getDrawable(R.drawable.select_days_or_hours));
+        if (txtSelectDays == selectedView) {
+            recyclerViewWeatherInDays.setVisibility(View.VISIBLE);
+            recyclerViewWeatherInHours.setVisibility(View.GONE);
+        } else {
+            recyclerViewWeatherInDays.setVisibility(View.GONE);
+            recyclerViewWeatherInHours.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

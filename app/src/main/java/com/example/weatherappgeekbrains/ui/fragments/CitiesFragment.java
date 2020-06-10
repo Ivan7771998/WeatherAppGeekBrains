@@ -219,6 +219,7 @@ public class CitiesFragment extends Fragment {
                     entityMyLocation.timestamp = System.currentTimeMillis();
                     App.getInstance().getCityDao().insertMyLocation(entityMyLocation);
 
+
                 }
 
                 @Override

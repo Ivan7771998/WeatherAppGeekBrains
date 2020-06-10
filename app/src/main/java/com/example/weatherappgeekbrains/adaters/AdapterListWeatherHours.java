@@ -19,32 +19,32 @@ import com.example.weatherappgeekbrains.tools.UntilTimes;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AdapterListWeatherWeek extends RecyclerView.Adapter<AdapterListWeatherWeek.ViewHolder> {
+public class AdapterListWeatherHours extends RecyclerView.Adapter<AdapterListWeatherHours.ViewHolder> {
 
     private DataWeatherFromCor dataWeather;
     private Context context;
 
-    public AdapterListWeatherWeek(DataWeatherFromCor dataWeather, Context context) {
+    public AdapterListWeatherHours(DataWeatherFromCor dataWeather, Context context) {
         this.dataWeather = dataWeather;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public AdapterListWeatherWeek.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterListWeatherHours.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_list_hour_weather, parent, false);
-        return new ViewHolder(view);
+                .inflate(R.layout.item_list_days_or_hours_weather, parent, false);
+        return new AdapterListWeatherHours.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterListWeatherWeek.ViewHolder holder, int position) {
-        initViewForDaily(holder);
+    public void onBindViewHolder(@NonNull AdapterListWeatherHours.ViewHolder holder, int position) {
+        initViewForHourly(holder);
     }
 
     @Override
     public int getItemCount() {
-        return dataWeather.getDaily().size();
+        return dataWeather.getHourly().size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -67,22 +67,22 @@ public class AdapterListWeatherWeek extends RecyclerView.Adapter<AdapterListWeat
         }
     }
 
-    private void initViewForDaily(ViewHolder holder) {
+    private void initViewForHourly(AdapterListWeatherHours.ViewHolder holder) {
         Glide.with(context)
-                .load(Constants.GET_IMG + dataWeather.getDaily().get(holder.getAdapterPosition()).getWeather().get(0).getIcon() + ".png")
+                .load(Constants.GET_IMG + dataWeather.getHourly().get(holder.getAdapterPosition()).getWeather().get(0).getIcon() + ".png")
                 .centerCrop()
                 .into(holder.imgWeather);
 
         holder.txtTemperature.setText(new StringBuilder(
-                Double.valueOf(dataWeather.getDaily().get(holder.getAdapterPosition()).getTemp().getDay().toString()).intValue()
+                Double.valueOf(dataWeather.getHourly().get(holder.getAdapterPosition()).getTemp().toString()).intValue()
                         + " " +
                         context.getResources().getString(R.string.temperature_values)));
 
-        holder.textHumidity.setText(new StringBuilder(Double.valueOf(dataWeather.getDaily().get(holder.getAdapterPosition())
+        holder.textHumidity.setText(new StringBuilder(Double.valueOf(dataWeather.getHourly().get(holder.getAdapterPosition())
                 .getHumidity().toString()).intValue()
                 + " " +
                 context.getResources().getString(R.string.humidity_values)));
 
-        holder.textDate.setText(UntilTimes.getTimeForDaily(dataWeather.getDaily().get(holder.getAdapterPosition()).getDt().longValue()));
+        holder.textDate.setText(UntilTimes.getTimeFromMil(dataWeather.getHourly().get(holder.getAdapterPosition()).getDt().longValue()));
     }
 }
