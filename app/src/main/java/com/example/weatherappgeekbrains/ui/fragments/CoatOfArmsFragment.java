@@ -1,6 +1,8 @@
 package com.example.weatherappgeekbrains.ui.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -23,14 +25,17 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.weatherappgeekbrains.App;
 import com.example.weatherappgeekbrains.R;
 import com.example.weatherappgeekbrains.adaters.AdapterListWeatherDays;
 import com.example.weatherappgeekbrains.adaters.AdapterListWeatherHours;
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
+import com.example.weatherappgeekbrains.models.CurrentWeatherModel;
 import com.example.weatherappgeekbrains.models.ModelGetWeatherFromCor.DataWeatherFromCor;
 import com.example.weatherappgeekbrains.network.Repository;
+import com.example.weatherappgeekbrains.tools.Constants;
 import com.example.weatherappgeekbrains.tools.Tools;
 import com.example.weatherappgeekbrains.tools.UntilTimes;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogErrorWithCity;
@@ -52,12 +57,10 @@ public class CoatOfArmsFragment extends Fragment {
     private long idCity;
     private EntityCity currentCity;
     private DataWeatherFromCor weatherFromCor;
+    private CurrentWeatherModel currentWeatherCor;
 
     @BindView(R.id.btnMoreInfo)
     MaterialButton btnMoreInfo;
-
-    @BindView(R.id.imageCity)
-    ImageView imageCity;
 
     @BindView(R.id.titleWeather)
     TextView titleWeather;
@@ -131,6 +134,13 @@ public class CoatOfArmsFragment extends Fragment {
     @BindView(R.id.txtSelectHours)
     TextView txtSelectHours;
 
+    @BindView(R.id.subTitleWeather)
+    TextView subTitleWeather;
+
+    @BindView(R.id.imgWeatherFr)
+    ImageView imgWeatherFr;
+
+
     private Unbinder unbinder;
 
     public CoatOfArmsFragment() {
@@ -184,11 +194,12 @@ public class CoatOfArmsFragment extends Fragment {
         mainContainer.setVisibility(View.GONE);
         App.getInstance().getRepository().getWeatherFromCoordinate(new Repository.IAnswerRequestFromCor() {
             @Override
-            public void onSuccess(DataWeatherFromCor dataWeatherFromCor) {
+            public void onSuccess(DataWeatherFromCor dataWeatherFromCor, CurrentWeatherModel currentWeatherModel) {
                 Log.e("TAG", dataWeatherFromCor.toString());
                 progressBar.setVisibility(View.GONE);
                 mainContainer.setVisibility(View.VISIBLE);
                 weatherFromCor = dataWeatherFromCor;
+                currentWeatherCor = currentWeatherModel;
                 addInDB();
                 initView();
                 initListWeather();
@@ -241,6 +252,11 @@ public class CoatOfArmsFragment extends Fragment {
 
     private void initView() {
         try {
+            if (getContext() != null)
+                Glide.with(getContext())
+                        .load(Constants.GET_IMG + weatherFromCor.getCurrent().getWeather().get(0).getIcon() + ".png")
+                        .centerCrop()
+                        .into(imgWeatherFr);
             textTemperature.setText(new StringBuilder(
                     Double.valueOf(weatherFromCor.getCurrent().getTemp().toString()).intValue()
                             + " " +
@@ -254,14 +270,14 @@ public class CoatOfArmsFragment extends Fragment {
                     .getFeelsLike().toString()).intValue()
                     + " " +
                     requireActivity().getResources().getString(R.string.temperature_values)));
-//            textMinTemp.setText(new StringBuilder(Double.valueOf(weatherFromCor.getCurrent()
-//                    .getTempMin().toString()).intValue()
-//                    + " " +
-//                    requireActivity().getResources().getString(R.string.temperature_values)));
-//            textMaxTemp.setText(new StringBuilder(Double.valueOf(currentWeather.getMain()
-//                    .getTempMax().toString()).intValue()
-//                    + " " +
-//                    requireActivity().getResources().getString(R.string.temperature_values)));
+            textMinTemp.setText(new StringBuilder(Double.valueOf(currentWeatherCor.getMain()
+                    .getTempMin().toString()).intValue()
+                    + " " +
+                    requireActivity().getResources().getString(R.string.temperature_values)));
+            textMaxTemp.setText(new StringBuilder(Double.valueOf(currentWeatherCor.getMain()
+                    .getTempMax().toString()).intValue()
+                    + " " +
+                    requireActivity().getResources().getString(R.string.temperature_values)));
             textPressure.setText(new StringBuilder(Double.valueOf(weatherFromCor.getCurrent()
                     .getPressure().toString()).intValue()
                     + " " +
@@ -278,14 +294,25 @@ public class CoatOfArmsFragment extends Fragment {
             textSunSet.setText(UntilTimes.getTimeFromMil(Long.valueOf(weatherFromCor.getCurrent().getSunset())));
             textVisibility.setText(new StringBuilder(weatherFromCor.getCurrent().getVisibility() / 1000 + " "
                     + requireActivity().getResources().getString(R.string.visible_values)));
-            if (currentCity.nameCity != null) {
-                titleWeather.setText(currentCity.nameCity);
-            } else {
-                Tools.setAddress(new LatLng(currentCity.latitude, currentCity.longitude), getContext(), titleWeather);
-            }
+
+            titleWeather.setText(currentWeatherCor.getName());
+            Tools.setAddress(new LatLng(currentCity.latitude, currentCity.longitude), getContext(), subTitleWeather);
+            openWeatherInBrowser();
         } catch (Exception e) {
             Log.e("TAG", "fragment onDetach()");
         }
+    }
+
+    private void openWeatherInBrowser() {
+        btnMoreInfo.setOnClickListener(v -> {
+            startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+                    Uri.parse("https://www.meteonova.ru/frcgeo/?fi=" +
+                            currentCity.latitude +
+                            "&la=" +
+                            currentCity.longitude +
+                            "&title=" +
+                            subTitleWeather.getText())));
+        });
     }
 
     private void initListWeather() {

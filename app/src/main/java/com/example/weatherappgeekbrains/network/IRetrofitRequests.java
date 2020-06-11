@@ -11,7 +11,8 @@ public interface IRetrofitRequests {
 
     @GET("weather?")
     Single<CurrentWeatherModel> getCurrentWeather(
-            @Query("q") String nameCity,
+            @Query("lat") String lat,
+            @Query("lon") String lon,
             @Query("units") String units,
             @Query("lang") String lang,
             @Query("appid") String apiKey);

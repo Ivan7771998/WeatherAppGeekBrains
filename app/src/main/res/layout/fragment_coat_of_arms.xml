@@ -19,95 +19,138 @@
             android:visibility="visible"
             tools:context=".ui.activities.MainActivity">
 
+
             <TextView
                 android:id="@+id/titleWeather"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:gravity="center"
                 android:maxLines="1"
                 android:text="@string/title_weather"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/size_title_weather"
                 android:textStyle="normal"
-                app:layout_constraintBottom_toBottomOf="@+id/textTemperature"
-                app:layout_constraintEnd_toEndOf="@+id/container_for_lists"
-                app:layout_constraintStart_toEndOf="@+id/textTemperature"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageCity"
-                android:layout_width="wrap_content"
-                android:layout_height="94dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/taganrog"
-                app:layout_constraintBottom_toBottomOf="@+id/imageWeather"
-                app:layout_constraintEnd_toEndOf="@+id/titleWeather"
-                app:layout_constraintHorizontal_bias="0.493"
-                app:layout_constraintStart_toStartOf="@+id/titleWeather"
-                app:layout_constraintTop_toTopOf="@+id/imageWeather"
-                app:srcCompat="@drawable/krasnodar" />
-
-            <ImageView
-                android:id="@+id/imageWeather"
-                android:layout_width="wrap_content"
-                android:layout_height="95dp"
-                android:layout_marginTop="20dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/ic_image_weather"
-                app:layout_constraintEnd_toEndOf="@+id/textTemperature"
-                app:layout_constraintStart_toStartOf="@+id/textStatusWeather"
-                app:layout_constraintTop_toBottomOf="@+id/textStatusWeather" />
+            <TextView
+                android:id="@+id/subTitleWeather"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="40dp"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                android:maxEms="3"
+                android:maxLines="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleWeather"
+                tools:text="dsdfsdfsfsfssdfsdfsfsfsfsdfsfsdfsdfsgsdfsdfdsfd" />
 
             <TextView
                 android:id="@+id/textDayTimeNow"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center"
                 android:text="@string/text_day_time_now"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageCity"
-                app:layout_constraintStart_toStartOf="@+id/imageWeather"
-                app:layout_constraintTop_toBottomOf="@+id/imageCity" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subTitleWeather">
+
+                <TextView
+                    android:id="@+id/textTemperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/text_temperature"
+                    android:textColor="@android:color/white"
+                    android:textSize="35sp"
+                    android:textStyle="normal" />
+
+                <ImageView
+                    android:id="@+id/imgWeatherFr"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_sun" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textStatusWeather"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/text_status_weather"
-                android:textColor="@android:color/white"
-                app:layout_constraintEnd_toEndOf="@+id/textTemperature"
-                app:layout_constraintStart_toStartOf="@+id/textTemperature"
-                app:layout_constraintTop_toBottomOf="@+id/textTemperature" />
-
-            <TextView
-                android:id="@+id/titleCurrentCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_select_city"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/textStatusWeather"
-                app:layout_constraintEnd_toEndOf="@+id/titleWeather"
-                app:layout_constraintStart_toStartOf="@+id/titleWeather"
-                app:layout_constraintTop_toBottomOf="@+id/titleWeather"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <TextView
-                android:id="@+id/textTemperature"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
                 android:gravity="center"
-                android:text="@string/text_temperature"
+                android:text="@string/text_status_weather"
                 android:textColor="@android:color/white"
-                android:textSize="30sp"
-                android:textStyle="normal"
-                app:layout_constraintStart_toStartOf="@+id/moreInfoLayout"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textStatusWeather">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/title_feel_like"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textFeelLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:gravity="end"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    tools:text="25°C " />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/prevLayout"
@@ -170,35 +213,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/container_for_lists"
                 app:layout_constraintStart_toStartOf="@+id/container_for_lists"
                 app:layout_constraintTop_toBottomOf="@+id/prevLayout">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:textColor="@android:color/white">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:paddingStart="10dp"
-                        android:text="@string/title_feel_like"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        tools:ignore="RtlSymmetry" />
-
-                    <TextView
-                        android:id="@+id/textFeelLike"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        tools:text="25°C " />
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
