@@ -69,7 +69,7 @@ public class AdapterListNameCity extends RecyclerView.Adapter<AdapterListNameCit
     }
 
     public void addCity(String nameCity) {
-        dataCities.addItem(nameCity);
+        dataCities.addItem(nameCity, fragment.getContext());
         if (dataCities.size() != 0) {
             notifyItemInserted(dataCities.size() - 1);
         } else notifyItemInserted(dataCities.size());

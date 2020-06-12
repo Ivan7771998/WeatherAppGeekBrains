@@ -10,4 +10,5 @@ public class Constants {
     static final String NOTIFY_BATTERY = "notify_battery";
     public static final String CHANNEL_ID = "main_channel";
     static final String NAME_PREFERENCE = "my_shared_preference";
+    public static final int PERMISSION_REQUEST_CODE = 10;
 }

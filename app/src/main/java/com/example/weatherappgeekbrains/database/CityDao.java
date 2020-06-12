@@ -10,6 +10,7 @@ import androidx.room.Update;
 
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.database.entities.EntityCityAndWeatherDesc;
+import com.example.weatherappgeekbrains.database.entities.EntityMyLocation;
 import com.example.weatherappgeekbrains.database.entities.EntityWeatherDesc;
 
 import java.util.List;
@@ -60,4 +61,11 @@ public interface CityDao {
     @Query("SELECT * from EntityCity")
     @Transaction
     List<EntityCityAndWeatherDesc> loadEntityCityAndWeatherDesc();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertMyLocation(EntityMyLocation myLocation);
+
+    @Query("SELECT * FROM EntityMyLocation WHERE timeStamp = (SELECT MAX(timeStamp) FROM EntityMyLocation)")
+    EntityMyLocation getCurrentLocation();
+
 }

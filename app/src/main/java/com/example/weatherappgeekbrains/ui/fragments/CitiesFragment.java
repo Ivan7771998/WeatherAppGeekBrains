@@ -1,12 +1,19 @@
 package com.example.weatherappgeekbrains.ui.fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -14,6 +21,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -29,9 +37,11 @@ import com.example.weatherappgeekbrains.data.DataCitiesBuilder;
 import com.example.weatherappgeekbrains.database.CityDao;
 import com.example.weatherappgeekbrains.database.entities.EntityCity;
 import com.example.weatherappgeekbrains.database.entities.EntityCityAndWeatherDesc;
+import com.example.weatherappgeekbrains.database.entities.EntityMyLocation;
 import com.example.weatherappgeekbrains.interfaces.IDataRecycler;
 import com.example.weatherappgeekbrains.tools.MySharedPref;
 import com.example.weatherappgeekbrains.ui.dialogs.DialogAddNewCity;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -40,6 +50,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static android.content.Context.LOCATION_SERVICE;
+import static com.example.weatherappgeekbrains.tools.Constants.PERMISSION_REQUEST_CODE;
 import static com.example.weatherappgeekbrains.ui.fragments.CoatOfArmsFragment.CITY_DATA_FR;
 
 
@@ -67,19 +79,20 @@ public class CitiesFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (!MySharedPref.getCurrentCity().equals("") && MySharedPref.getNetWorkConnect()) {
-            try {
-                showCoatOfArms(App.getInstance().getCityDao().getCityByName(MySharedPref.getCurrentCity()).id);
-            } catch (Exception e) {
-                MySharedPref.setCurrentCity("");
-            }
-        }
+//        if (!MySharedPref.getCurrentCity().equals("") && MySharedPref.getNetWorkConnect()) {
+//            try {
+//                showCoatOfArms(App.getInstance().getCityDao().getCityByName(MySharedPref.getCurrentCity()).id);
+//            } catch (Exception e) {
+//                MySharedPref.setCurrentCity("");
+//            }
+//        }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+        requestPermissions();
         iDataRecycler = initDataCities();
         initListCities(iDataRecycler);
         initFAB();
@@ -162,5 +175,74 @@ public class CitiesFragment extends Fragment {
     private void createAlertDialog() {
         DialogAddNewCity dialogAddNewCity = DialogAddNewCity.newInstance(adapterListNameCity);
         dialogAddNewCity.show(requireActivity().getSupportFragmentManager(), "DialogAddNewCity");
+    }
+
+    private void requestPermissions() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            requestLocation();
+        } else {
+            requestLocationPermissions();
+        }
+    }
+
+    private void requestLocationPermissions() {
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            requestPermissions(new String[]{
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    },
+                    PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                requestLocation();
+            }
+        }
+    }
+
+    // Запрашиваем координаты
+    private void requestLocation() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            return;
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+
+        String provider = locationManager.getBestProvider(criteria, true);
+        if (provider != null) {
+            locationManager.requestLocationUpdates(provider, 20, 1, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    double lat = location.getLatitude(); // Широта
+                    double lng = location.getLongitude(); // Долгота
+                    EntityMyLocation entityMyLocation = new EntityMyLocation();
+                    entityMyLocation.latitude = lat;
+                    entityMyLocation.longitude = lng;
+                    entityMyLocation.timestamp = System.currentTimeMillis();
+                    App.getInstance().getCityDao().insertMyLocation(entityMyLocation);
+
+
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+                }
+            });
+        }
     }
 }

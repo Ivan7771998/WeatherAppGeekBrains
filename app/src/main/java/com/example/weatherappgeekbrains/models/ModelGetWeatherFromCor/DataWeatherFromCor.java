@@ -5,25 +5,28 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class NewMain {
+public class DataWeatherFromCor {
     @SerializedName("lat")
     @Expose
-    public Double lat;
+    private Double lat;
     @SerializedName("lon")
     @Expose
-    public Double lon;
+    private Double lon;
     @SerializedName("timezone")
     @Expose
-    public String timezone;
+    private String timezone;
     @SerializedName("timezone_offset")
     @Expose
-    public Integer timezoneOffset;
+    private Integer timezoneOffset;
     @SerializedName("current")
     @Expose
-    public Current current;
+    private Current current;
     @SerializedName("hourly")
     @Expose
-    public List<Hourly> hourly = null;
+    private List<Hourly> hourly = null;
+    @SerializedName("daily")
+    @Expose
+    private List<Daily> daily = null;
 
     public Double getLat() {
         return lat;
@@ -47,6 +50,10 @@ public class NewMain {
 
     public List<Hourly> getHourly() {
         return hourly;
+    }
+
+    public List<Daily> getDaily() {
+        return daily;
     }
 
     @Override

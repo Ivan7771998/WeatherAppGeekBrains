@@ -10,34 +10,74 @@ public class Hourly {
 
     @SerializedName("dt")
     @Expose
-    public Integer dt;
+    private Integer dt;
     @SerializedName("temp")
     @Expose
-    public Double temp;
+    private Double temp;
     @SerializedName("feels_like")
     @Expose
-    public Double feelsLike;
+    private Double feelsLike;
     @SerializedName("pressure")
     @Expose
-    public Integer pressure;
+    private Integer pressure;
     @SerializedName("humidity")
     @Expose
-    public Integer humidity;
+    private Integer humidity;
     @SerializedName("dew_point")
     @Expose
-    public Double dewPoint;
+    private Double dewPoint;
     @SerializedName("clouds")
     @Expose
-    public Integer clouds;
+    private Integer clouds;
     @SerializedName("wind_speed")
     @Expose
-    public Double windSpeed;
+    private Double windSpeed;
     @SerializedName("wind_deg")
     @Expose
-    public Integer windDeg;
+    private Integer windDeg;
     @SerializedName("weather")
     @Expose
-    public List<WeatherModel> weather = null;
+    private List<WeatherModel> weather = null;
+
+    public Integer getDt() {
+        return dt;
+    }
+
+    public Double getTemp() {
+        return temp;
+    }
+
+    public Double getFeelsLike() {
+        return feelsLike;
+    }
+
+    public Integer getPressure() {
+        return pressure;
+    }
+
+    public Integer getHumidity() {
+        return humidity;
+    }
+
+    public Double getDewPoint() {
+        return dewPoint;
+    }
+
+    public Integer getClouds() {
+        return clouds;
+    }
+
+    public Double getWindSpeed() {
+        return windSpeed;
+    }
+
+    public Integer getWindDeg() {
+        return windDeg;
+    }
+
+    public List<WeatherModel> getWeather() {
+        return weather;
+    }
 
     @Override
     public String toString() {
