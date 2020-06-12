@@ -1,5 +1,6 @@
 package com.example.weatherappgeekbrains.ui.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -26,6 +27,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.weatherappgeekbrains.App;
 import com.example.weatherappgeekbrains.R;
@@ -90,10 +92,14 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
                     sendPushNotification();
                     break;
                 case R.id.nav_find_out_the_weather:
-                    //requestLocation();
-                    EntityMyLocation entityMyLocation = App.getInstance().getCityDao().getCurrentLocation();
-                    LatLng coordinate = new LatLng(entityMyLocation.latitude, entityMyLocation.longitude);
-                    showCoatOfArms(coordinate);
+                    try {
+                        EntityMyLocation entityMyLocation = App.getInstance().getCityDao().getCurrentLocation();
+                        LatLng coordinate = new LatLng(entityMyLocation.latitude, entityMyLocation.longitude);
+                        showCoatOfArms(coordinate);
+                    } catch (Exception e) {
+                        Toast.makeText(this, getText(R.string.geolocation_not_found),
+                                Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
             NavigationUI.onNavDestinationSelected(item, navController);

@@ -70,4 +70,5 @@
     <string name="my_channel">my_channel</string>
     <string name="my_channel_firebase">my_channel_firebase</string>
     <string name="find_out_the_weather">Find out the weather</string>
+    <string name="geolocation_not_found">Not found location!</string>
 </resources>
