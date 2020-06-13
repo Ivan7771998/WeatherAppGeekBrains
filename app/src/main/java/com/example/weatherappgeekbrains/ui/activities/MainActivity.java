@@ -74,33 +74,25 @@ public class MainActivity extends BaseActivity implements IFragmentDialog {
     }
 
     private void initDrawer() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_weather,
-                R.id.nav_about_dev,
-                R.id.nav_settings,
-                R.id.nav_send_push_notify,
-                R.id.nav_find_out_the_weather)
+                navController.getGraph())
                 .setDrawerLayout(drawer)
                 .build();
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.nav_send_push_notify:
-                    sendPushNotification();
-                    break;
-                case R.id.nav_find_out_the_weather:
-                    try {
-                        EntityMyLocation entityMyLocation = App.getInstance().getCityDao().getCurrentLocation();
-                        LatLng coordinate = new LatLng(entityMyLocation.latitude, entityMyLocation.longitude);
-                        showCoatOfArms(coordinate);
-                    } catch (Exception e) {
-                        Toast.makeText(this, getText(R.string.geolocation_not_found),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    break;
+            if (item.getItemId() == R.id.nav_send_push_notify) {
+                sendPushNotification();
+            } else {
+                try {
+                    EntityMyLocation entityMyLocation = App.getInstance().getCityDao().getCurrentLocation();
+                    LatLng coordinate = new LatLng(entityMyLocation.latitude, entityMyLocation.longitude);
+                    showCoatOfArms(coordinate);
+                } catch (Exception e) {
+                    Toast.makeText(this, getText(R.string.geolocation_not_found),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
             NavigationUI.onNavDestinationSelected(item, navController);
             drawer.closeDrawer(GravityCompat.START);
