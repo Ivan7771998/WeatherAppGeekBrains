@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeatherAppGeekBrains</string>
+    <string name="app_name">WeatherDemo</string>
     <string name="title_weather">Moscow</string>
     <string name="text_status_weather">Advantage sunny</string>
     <string name="text_temperature">15 °C</string>
